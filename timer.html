@@ -39,6 +39,10 @@
         font-family: monospace;
       }
 
+      .timer-control-button:disabled {
+        opacity: 0.5;
+      }
+
       .copyright,
       .copyright a {
         font-size: 0.7rem;
@@ -53,46 +57,46 @@
       <time-display :sec="currentSec"></time-display>
       <div class="timer-control">
         <div>
-          <button @click="startButton" class="timer-control-button">
+          <button @click="startButton" class="timer-control-button" :disabled="!timer.state.canGoToCountingDown()">
             スタート
           </button>
-          <button @click="stopButton" class="timer-control-button">
+          <button @click="stopButton" class="timer-control-button" :disabled="!timer.state.canGoToPausingCountDown()">
             ストップ
           </button>
         </div>
         <div>
-          <button @click="restoreButton" class="timer-control-button">
+          <button @click="restoreButton" class="timer-control-button"  :disabled="!timer.state.isCountingDownCompleted()">
             鳴動停止
           </button>
           <button @click="resetButton" class="timer-control-button">
             リセット
           </button>
-          <button @click="inputSecAndSetButton" class="timer-control-button">
+          <button @click="inputSecAndSetButton" class="timer-control-button"  :disabled="!timer.state.canGoToSettingTime()">
             秒数入力
           </button>
         </div>
         <div>
-          <button @click="addMinuteButton" class="timer-control-button">
+          <button @click="addMinuteButton" class="timer-control-button" :disabled="!timer.state.canGoToSettingTime()">
             +分
           </button>
-          <button @click="addSecondButton" class="timer-control-button">
+          <button @click="addSecondButton" class="timer-control-button" :disabled="!timer.state.canGoToSettingTime()">
             +秒
           </button>
         </div>
         <div>
-          <button @click="setSecButton(60)" class="timer-control-button">
+          <button @click="setSecButton(60)" class="timer-control-button" :disabled="!timer.state.canGoToSettingTime()">
             1分
           </button>
-          <button @click="setSecButton(120)" class="timer-control-button">
+          <button @click="setSecButton(120)" class="timer-control-button" :disabled="!timer.state.canGoToSettingTime()">
             2分
           </button>
-          <button @click="setSecButton(180)" class="timer-control-button">
+          <button @click="setSecButton(180)" class="timer-control-button" :disabled="!timer.state.canGoToSettingTime()">
             3分
           </button>
-          <button @click="setSecButton(240)" class="timer-control-button">
+          <button @click="setSecButton(240)" class="timer-control-button" :disabled="!timer.state.canGoToSettingTime()">
             4分
           </button>
-          <button @click="setSecButton(360)" class="timer-control-button">
+          <button @click="setSecButton(360)" class="timer-control-button" :disabled="!timer.state.canGoToSettingTime()">
             6分
           </button>
         </div>
