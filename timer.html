@@ -200,7 +200,10 @@
         }
       }
       TkTimer.prototype.reset = function () {
-        this.init()
+        if (this.canGoToInitialState()) {
+          this.init()
+          this.goToInitialState()
+        }
       }
 
       const app = new Vue({
