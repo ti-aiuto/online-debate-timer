@@ -52,7 +52,9 @@
     </style>
   </head>
   <body>
-    <div class="header">カウントダウンタイマー<br>※カウント終了時音が鳴ります</div>
+    <div class="header">
+      カウントダウンタイマー<br />※カウント終了時音が鳴ります
+    </div>
     <div id="timer-ui">
       <time-display :sec="currentSec"></time-display>
       <div class="timer-control">
@@ -237,10 +239,10 @@
         this.state = new TkTimerState()
         this.init()
       }
-      TkTimer.prototype.setTickCallback = function(callback) {
+      TkTimer.prototype.setTickCallback = function (callback) {
         this.tickCallback = callback
       }
-      TkTimer.prototype.setCountDownCompleteCallback = function(callback) {
+      TkTimer.prototype.setCountDownCompleteCallback = function (callback) {
         this.countDownCompleteCallback = callback
       }
       TkTimer.prototype.clearTimer = function () {
@@ -281,7 +283,7 @@
         if (!this.state.canGoToSettingTime()) {
           return
         }
-        this.setSec(this.currentSec + sec);
+        this.setSec(this.currentSec + sec)
       }
       TkTimer.prototype.onSecTick = function () {
         if (this.state.isCountingDown()) {
@@ -289,7 +291,7 @@
           this.notifyCurrentSec()
           if (this.currentSec === 0) {
             if (this.countDownCompleteCallback) {
-              this.countDownCompleteCallback();
+              this.countDownCompleteCallback()
             }
             this.state.goToCountingDownCompleted()
             this.clearTimer()
@@ -381,47 +383,58 @@
       const app = new Vue({
         el: '#timer-ui',
         data: function () {
-          const timer = new TkTimer();
-          timer.setTickCallback(this.onTick);
-          const timeUpAudio = new Audio('timer-timeup.mp3');
-          timeUpAudio.loop = true;
-          timeUpAudio.load();
-          timer.setCountDownCompleteCallback(this.onCountDownComplete);
+          const timer = new TkTimer()
+          timer.setTickCallback(this.onTick)
+          const timeUpAudio = new Audio('timer-timeup.mp3')
+          timeUpAudio.loop = true
+          timeUpAudio.load()
+          timer.setCountDownCompleteCallback(this.onCountDownComplete)
           return { currentSec: 0, timer: timer, timeUpAudio: timeUpAudio }
         },
         methods: {
           onTick: function (sec) {
             this.currentSec = sec
           },
-          onCountDownComplete: function() {
-            this.timeUpAudio.currentTime = 0;
-            this.timeUpAudio.play();
-          }, 
+          onCountDownComplete: function () {
+            this.startTimeUpAudio()
+          },
+          startTimeUpAudio: function () {
+            try {
+              this.timeUpAudio.currentTime = 0
+              this.timeUpAudio.play()
+            } catch (e) {}
+          },
+          stopTimeUpAudio: function () {
+            try {
+              this.timeUpAudio.pause()
+            } catch (e) {}
+          },
           startButton: function () {
-            this.timer.pause()
             this.timer.start()
           },
           stopButton: function () {
+            this.stopTimeUpAudio()
             this.timer.pause()
           },
           restoreButton: function () {
-            this.timeUpAudio.pause();
+            this.stopTimeUpAudio()
             this.timer.restore()
           },
           resetButton: function () {
-            this.timeUpAudio.pause();
+            this.stopTimeUpAudio()
             this.timer.reset()
           },
           addMinutesButton: function (min) {
+            this.stopTimeUpAudio()
             this.timer.pause()
             this.timer.addSeconds(min * 60)
           },
           addSecondsButton: function (sec) {
-            this.timer.pause()
+            this.stopTimeUpAudio()
             this.timer.addSeconds(sec)
           },
           setSecButton: function (sec) {
-            this.timer.pause()
+            this.stopTimeUpAudio()
             this.timer.setSec(sec)
           },
         },
