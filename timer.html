@@ -157,12 +157,16 @@
         }
       };
       TkTimer.prototype.start = function () {
-        this.state.goToCountingDown();
-        this.tickStartedAtMsec = Date.now();
-        const that = this;
-        this.timerId = setInterval(function () {
-          that.onIntervalTick();
-        }, 50);
+        if (this.state.canGoToCountingDown()) {
+          this.state.goToCountingDown();
+          this.tickStartedAtMsec = Date.now();
+          const that = this;
+          this.timerId = setInterval(function () {
+            that.onIntervalTick();
+          }, 50);
+        } else {
+          // いつかupも実装
+        }
       };
       TkTimer.prototype.pause = function () {
         if (!this.canGoToPausingCountDown()) {
