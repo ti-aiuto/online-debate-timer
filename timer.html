@@ -105,7 +105,7 @@
       };
       TkTimer.prototype.reset = function () {
         this.clearTimer();
-        this.targetSec = 0;
+        this.rememberedTargetSec = 0;
         this.currentSec = 0;
       };
       TkTimer.prototype.notifyCurrentSec = function () {
@@ -161,6 +161,10 @@
           if (this.currentSec === 0) {
             return;
           }
+          if (this.state.isSettingTime()) {
+            // 新規にカウントダウンをスタートする場合だけ設定時間を覚えておく
+            this.rememberedTargetSec = this.currentSec;
+          }
           this.state.goToCountingDown();
           this.tickStartedAtMsec = Date.now();
           const that = this;
@@ -178,7 +182,12 @@
         this.clearTimer();
         this.state.goToPausingCountDown();
       };
-      TkTimer.prototype.restore = function () {};
+      TkTimer.prototype.restore = function () {
+        if (this.canGoToSettingTime()) {
+          this.currentSec = this.rememberedTargetSec;
+          this.goToSettingTime();
+        }
+      };
 
       const app = new Vue({
         el: "#timer-ui",
