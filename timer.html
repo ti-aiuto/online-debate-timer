@@ -26,17 +26,20 @@
     </div>
     <script type="text/javascript">
       const TkTimeStateValue = Object.freeze({
-        INITIAL: 'INITIAL', 
-        SETTING_TIME: 'SETTING_TIME', 
-        COUNTING_DOWN: 'COUNTING_DOWN', 
-        PAUSING_COUNTING_DOWN: 'PAUSING_COUNTING_DOWN', 
-        COUNTING_DOWN_COMPLETED: 'COUNTING_DOWN_COMPLETED'
+        INITIAL_STATE: "INITIAL_STATE",
+        SETTING_TIME: "SETTING_TIME",
+        COUNTING_DOWN: "COUNTING_DOWN",
+        PAUSING_COUNTING_DOWN: "PAUSING_COUNTING_DOWN",
+        COUNTING_DOWN_COMPLETED: "COUNTING_DOWN_COMPLETED",
       });
       const TkTimerState = function () {
-        this.state = TkTimeStateValue.INITIAL;
+        this.state = TkTimeStateValue.INITIAL_STATE;
+      };
+      TkTimerState.prototype.isInitialState = function () {
+        return this.state === TkTimeStateValue.INITIAL_STATE;
       };
       TkTimerState.prototype.canGoToSettingTime = function () {
-        return true;
+        return this.isInitialState() || this.isSettingTime();
       };
       TkTimerState.prototype.goToSettingTime = function () {
         this.state = TkTimeStateValue.SETTING_TIME;
@@ -45,7 +48,7 @@
         this.state === TkTimeStateValue.SETTING_TIME;
       };
       TkTimerState.prototype.canGoToCountingDown = function () {
-        return true;
+        return this.isSettingTime() || this.isPausingCountDown();
       };
       TkTimerState.prototype.goToCountingDown = function () {
         this.state = TkTimeStateValue.COUNTING_DOWN;
@@ -54,7 +57,7 @@
         return this.state === TkTimeStateValue.COUNTING_DOWN;
       };
       TkTimerState.prototype.canGoToPausingCountDown = function () {
-        return true;
+        return this.isCountingDown();
       };
       TkTimerState.prototype.goToPausingCountDown = function () {
         this.state = TkTimeStateValue.PAUSING_COUNTING_DOWN;
@@ -63,7 +66,7 @@
         this.state === TkTimeStateValue.PAUSING_COUNTING_DOWN;
       };
       TkTimerState.prototype.canGoToCountingDownCompleted = function () {
-        return true;
+        return this.isCountingDown();
       };
       TkTimerState.prototype.goToCountingDownCompleted = function () {
         this.state = TkTimeStateValue.COUNTING_DOWN_COMPLETED;
