@@ -26,194 +26,194 @@
     </div>
     <script type="text/javascript">
       const TkTimeStateValue = Object.freeze({
-        INITIAL_STATE: "INITIAL_STATE",
-        SETTING_TIME: "SETTING_TIME",
-        COUNTING_DOWN: "COUNTING_DOWN",
-        PAUSING_COUNTING_DOWN: "PAUSING_COUNTING_DOWN",
-        COUNTING_DOWN_COMPLETED: "COUNTING_DOWN_COMPLETED",
-      });
+        INITIAL_STATE: 'INITIAL_STATE',
+        SETTING_TIME: 'SETTING_TIME',
+        COUNTING_DOWN: 'COUNTING_DOWN',
+        PAUSING_COUNTING_DOWN: 'PAUSING_COUNTING_DOWN',
+        COUNTING_DOWN_COMPLETED: 'COUNTING_DOWN_COMPLETED',
+      })
       const TkTimerState = function () {
-        this.state = TkTimeStateValue.INITIAL_STATE;
-      };
+        this.state = TkTimeStateValue.INITIAL_STATE
+      }
       TkTimerState.prototype.isInitialState = function () {
-        return this.state === TkTimeStateValue.INITIAL_STATE;
-      };
+        return this.state === TkTimeStateValue.INITIAL_STATE
+      }
       TkTimerState.prototype.canGoToSettingTime = function () {
-        return this.isInitialState() || this.isSettingTime();
-      };
+        return this.isInitialState() || this.isSettingTime()
+      }
       TkTimerState.prototype.goToSettingTime = function () {
         if (!this.canGoToSettingTime()) {
-          return;
+          return
         }
-        this.state = TkTimeStateValue.SETTING_TIME;
-      };
+        this.state = TkTimeStateValue.SETTING_TIME
+      }
       TkTimerState.prototype.isSettingTime = function () {
-        return this.state === TkTimeStateValue.SETTING_TIME;
-      };
+        return this.state === TkTimeStateValue.SETTING_TIME
+      }
       TkTimerState.prototype.canGoToCountingDown = function () {
-        return this.isSettingTime() || this.isPausingCountDown();
-      };
+        return this.isSettingTime() || this.isPausingCountDown()
+      }
       TkTimerState.prototype.goToCountingDown = function () {
         if (!this.canGoToCountingDown()) {
-          return;
+          return
         }
-        this.state = TkTimeStateValue.COUNTING_DOWN;
-      };
+        this.state = TkTimeStateValue.COUNTING_DOWN
+      }
       TkTimerState.prototype.isCountingDown = function () {
-        return this.state === TkTimeStateValue.COUNTING_DOWN;
-      };
+        return this.state === TkTimeStateValue.COUNTING_DOWN
+      }
       TkTimerState.prototype.canGoToPausingCountDown = function () {
-        return this.isCountingDown();
-      };
+        return this.isCountingDown()
+      }
       TkTimerState.prototype.goToPausingCountDown = function () {
         if (!this.canGoToPausingCountDown()) {
-          return;
+          return
         }
-        this.state = TkTimeStateValue.PAUSING_COUNTING_DOWN;
-      };
+        this.state = TkTimeStateValue.PAUSING_COUNTING_DOWN
+      }
       TkTimerState.prototype.isPausingCountDown = function () {
-        return this.state === TkTimeStateValue.PAUSING_COUNTING_DOWN;
-      };
+        return this.state === TkTimeStateValue.PAUSING_COUNTING_DOWN
+      }
       TkTimerState.prototype.canGoToCountingDownCompleted = function () {
-        return this.isCountingDown();
-      };
+        return this.isCountingDown()
+      }
       TkTimerState.prototype.goToCountingDownCompleted = function () {
         if (!this.canGoToCountingDownCompleted()) {
-          return;
+          return
         }
-        this.state = TkTimeStateValue.COUNTING_DOWN_COMPLETED;
-      };
+        this.state = TkTimeStateValue.COUNTING_DOWN_COMPLETED
+      }
       TkTimerState.prototype.isCountingDownCompleted = function () {
-        return this.state === TkTimeStateValue.COUNTING_DOWN_COMPLETED;
-      };
+        return this.state === TkTimeStateValue.COUNTING_DOWN_COMPLETED
+      }
 
       // 数値表示コンポーネント定義
       // タイマーディスプレイ定義
       // タイマーUI定義
       // タイマーロジック定義
       const TkTimer = function (callback) {
-        this.tickCallback = callback;
-        this.state = new TkTimerState();
-        this.state.goToSettingTime();
-        this.reset();
-      };
+        this.tickCallback = callback
+        this.state = new TkTimerState()
+        this.state.goToSettingTime()
+        this.reset()
+      }
       TkTimer.prototype.clearTimer = function () {
-        clearInterval(this.timerId);
-        this.timerId = null;
-        this.tickStartedAtMsec = null;
-        this.lastTimeTickedSec = 0;
-      };
+        clearInterval(this.timerId)
+        this.timerId = null
+        this.tickStartedAtMsec = null
+        this.lastTimeTickedSec = 0
+      }
       TkTimer.prototype.reset = function () {
-        this.clearTimer();
-        this.rememberedTargetSec = 0;
-        this.currentSec = 0;
-      };
+        this.clearTimer()
+        this.rememberedTargetSec = 0
+        this.currentSec = 0
+      }
       TkTimer.prototype.notifyCurrentSec = function () {
         if (this.tickCallback) {
-          this.tickCallback(this.currentSec);
+          this.tickCallback(this.currentSec)
         }
-      };
+      }
       TkTimer.prototype.setSec = function (sec) {
         if (!this.state.canGoToSettingTime()) {
-          return;
+          return
         }
-        this.currentSec = sec;
-        this.notifyCurrentSec();
-      };
+        this.currentSec = sec
+        this.notifyCurrentSec()
+      }
       TkTimer.prototype.addMinute = function () {
         if (!this.state.canGoToSettingTime()) {
-          return;
+          return
         }
-        this.currentSec += 60;
-        this.notifyCurrentSec();
-      };
+        this.currentSec += 60
+        this.notifyCurrentSec()
+      }
       TkTimer.prototype.addSecond = function () {
         if (!this.state.canGoToSettingTime()) {
-          return;
+          return
         }
-        this.currentSec += 1;
-        this.notifyCurrentSec();
-      };
+        this.currentSec += 1
+        this.notifyCurrentSec()
+      }
       TkTimer.prototype.onSecTick = function () {
         if (this.state.isCountingDown()) {
-          this.currentSec -= 1;
-          this.notifyCurrentSec();
+          this.currentSec -= 1
+          this.notifyCurrentSec()
           if (this.currentSec === 0) {
-            this.state.goToCountingDownCompleted();
-            this.clearTimer();
+            this.state.goToCountingDownCompleted()
+            this.clearTimer()
           }
         } else {
           // いつかupも実装
         }
-      };
+      }
       TkTimer.prototype.onIntervalTick = function () {
         // スタート時点の時刻と現在時刻を比較して正確な経過時間を計測する
-        const currentTime = Date.now();
-        const d = currentTime - this.tickStartedAtMsec;
-        const timeTickedSec = Math.floor(d / 1000);
+        const currentTime = Date.now()
+        const d = currentTime - this.tickStartedAtMsec
+        const timeTickedSec = Math.floor(d / 1000)
         if (timeTickedSec !== this.lastTimeTickedSec) {
-          this.onSecTick();
-          this.lastTimeTickedSec = timeTickedSec;
+          this.onSecTick()
+          this.lastTimeTickedSec = timeTickedSec
         }
-      };
+      }
       TkTimer.prototype.start = function () {
         if (this.state.canGoToCountingDown()) {
           if (this.currentSec === 0) {
-            return;
+            return
           }
           if (this.state.isSettingTime()) {
             // 新規にカウントダウンをスタートする場合だけ設定時間を覚えておく
-            this.rememberedTargetSec = this.currentSec;
+            this.rememberedTargetSec = this.currentSec
           }
-          this.state.goToCountingDown();
-          this.tickStartedAtMsec = Date.now();
-          const that = this;
+          this.state.goToCountingDown()
+          this.tickStartedAtMsec = Date.now()
+          const that = this
           this.timerId = setInterval(function () {
-            that.onIntervalTick();
-          }, 50);
+            that.onIntervalTick()
+          }, 50)
         } else {
           // いつかupも実装
         }
-      };
+      }
       TkTimer.prototype.pause = function () {
         if (!this.state.canGoToPausingCountDown()) {
-          return;
+          return
         }
-        this.clearTimer();
-        this.state.goToPausingCountDown();
-      };
+        this.clearTimer()
+        this.state.goToPausingCountDown()
+      }
       TkTimer.prototype.restore = function () {
         if (this.canGoToSettingTime()) {
-          this.currentSec = this.rememberedTargetSec;
-          this.goToSettingTime();
+          this.currentSec = this.rememberedTargetSec
+          this.goToSettingTime()
         }
-      };
+      }
 
       const app = new Vue({
-        el: "#timer-ui",
+        el: '#timer-ui',
         data: function () {
-          return { currentSec: 0, timer: new TkTimer(this.onTick) };
+          return { currentSec: 0, timer: new TkTimer(this.onTick) }
         },
         methods: {
           onTick: function (sec) {
-            this.currentSec = sec;
+            this.currentSec = sec
           },
           startButton: function () {
-            this.timer.start();
+            this.timer.start()
           },
           stopButton: function () {
-            this.timer.pause();
+            this.timer.pause()
           },
           resetButton: function () {},
           addMinuteButton: function () {
-            this.timer.addMinute();
+            this.timer.addMinute()
           },
           addSecondButton: function () {
-            this.timer.addSecond();
+            this.timer.addSecond()
           },
         },
         mounted: function () {},
-      });
+      })
     </script>
   </body>
 </html>
