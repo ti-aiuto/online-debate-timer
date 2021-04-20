@@ -398,6 +398,7 @@
             this.timeUpAudio.play();
           }, 
           startButton: function () {
+            this.timer.pause()
             this.timer.start()
           },
           stopButton: function () {
@@ -412,12 +413,15 @@
             this.timer.reset()
           },
           addMinutesButton: function (min) {
+            this.timer.pause()
             this.timer.addSeconds(min * 60)
           },
           addSecondsButton: function (sec) {
+            this.timer.pause()
             this.timer.addSeconds(sec)
           },
           setSecButton: function (sec) {
+            this.timer.pause()
             this.timer.setSec(sec)
           },
         },
