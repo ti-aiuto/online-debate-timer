@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf8" />
     <title>タイマー</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
   </head>
@@ -26,6 +26,7 @@
       </div>
     </div>
     <script type="text/javascript">
+      // タイマーの状態遷移を整理したオブジェクト
       const TkTimerStateValue = Object.freeze({
         INITIAL_STATE: 'INITIAL_STATE',
         SETTING_TIME: 'SETTING_TIME',
@@ -49,7 +50,11 @@
         return this.state === TkTimerStateValue.INITIAL_STATE
       }
       TkTimerState.prototype.canGoToSettingTime = function () {
-        return this.isInitialState() || this.isSettingTime() || this.isCountingDownCompleted()
+        return (
+          this.isInitialState() ||
+          this.isSettingTime() ||
+          this.isCountingDownCompleted()
+        )
       }
       TkTimerState.prototype.goToSettingTime = function () {
         if (!this.canGoToSettingTime()) {
@@ -97,10 +102,7 @@
         return this.state === TkTimerStateValue.COUNTING_DOWN_COMPLETED
       }
 
-      // 数値表示コンポーネント定義
-      // タイマーディスプレイ定義
-      // タイマーUI定義
-      // タイマーロジック定義
+      // タイマーロジック
       const TkTimer = function (callback) {
         this.tickCallback = callback
         this.state = new TkTimerState()
@@ -196,7 +198,7 @@
       }
       TkTimer.prototype.restore = function () {
         if (this.state.canGoToSettingTime()) {
-          this.setSec(this.rememberedTargetSec);
+          this.setSec(this.rememberedTargetSec)
           // 遷移は中でやってくれる
         }
       }
@@ -207,16 +209,30 @@
         }
       }
 
+      const zeroPadding = function(number) {
+        return ('000' + number).slice(-2);
+      }
+
+      // タイマーの数値表示部分のコンポーネント
       Vue.component('time-display', {
-        template: '<div>{{sec}}</div>', 
+        template: '<div>{{minutes}}:{{seconds}}</div>',
         props: {
           sec: {
-            type: Number, 
-            required: true
+            type: Number,
+            required: true,
+          },
+        },
+        computed: {
+          minutes: function() {
+            return zeroPadding(Math.floor(this.sec / 60));
+          }, 
+          seconds:  function() {
+            return zeroPadding(this.sec % 60);
           }
         }
-      });
+      })
 
+      // タイマーUI
       const app = new Vue({
         el: '#timer-ui',
         data: function () {
@@ -232,11 +248,11 @@
           stopButton: function () {
             this.timer.pause()
           },
-          restoreButton: function() {
-            this.timer.restore();
-          }, 
+          restoreButton: function () {
+            this.timer.restore()
+          },
           resetButton: function () {
-            this.timer.reset();
+            this.timer.reset()
           },
           addMinuteButton: function () {
             this.timer.addMinute()
