@@ -104,6 +104,7 @@
     </div>
     <div class="copyright">
       by ti-aiuto<br />
+      ※鳴動はまだ実装前<br />
       デザイン・効果音募集中<br />
       <a href="https://github.com/ti-aiuto/online-debate-timer"
         >https://github.com/ti-aiuto/online-debate-timer</a
@@ -186,6 +187,8 @@
         return this.state === TkTimerStateValue.COUNTING_DOWN_COMPLETED
       }
 
+      const TIMER_UPPER_LIMIT = 60 * 99 + 60 - 1;
+
       // タイマーロジック
       const TkTimer = function (callback) {
         this.tickCallback = callback
@@ -208,9 +211,19 @@
           this.tickCallback(this.currentSec)
         }
       }
-      TkTimer.prototype.setSec = function (sec) {
+      TkTimer.prototype.setSec = function (secArg) {
         if (!this.state.canGoToSettingTime()) {
           return
+        }
+        if (!(secArg + '').match(/^\d+$/)) {
+          return;
+        }
+        sec = Number(secArg);
+        if (sec < 0) {
+          return;
+        }
+        if (sec > TIMER_UPPER_LIMIT) {
+          sec =TIMER_UPPER_LIMIT;
         }
         this.currentSec = sec
         this.notifyCurrentSec()
