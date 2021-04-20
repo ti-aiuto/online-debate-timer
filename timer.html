@@ -48,7 +48,7 @@
         this.state = TkTimeStateValue.SETTING_TIME;
       };
       TkTimerState.prototype.isSettingTime = function () {
-        this.state === TkTimeStateValue.SETTING_TIME;
+        return this.state === TkTimeStateValue.SETTING_TIME;
       };
       TkTimerState.prototype.canGoToCountingDown = function () {
         return this.isSettingTime() || this.isPausingCountDown();
@@ -72,7 +72,7 @@
         this.state = TkTimeStateValue.PAUSING_COUNTING_DOWN;
       };
       TkTimerState.prototype.isPausingCountDown = function () {
-        this.state === TkTimeStateValue.PAUSING_COUNTING_DOWN;
+        return this.state === TkTimeStateValue.PAUSING_COUNTING_DOWN;
       };
       TkTimerState.prototype.canGoToCountingDownCompleted = function () {
         return this.isCountingDown();
@@ -84,7 +84,7 @@
         this.state = TkTimeStateValue.COUNTING_DOWN_COMPLETED;
       };
       TkTimerState.prototype.isCountingDownCompleted = function () {
-        this.state === TkTimeStateValue.COUNTING_DOWN_COMPLETED;
+        return this.state === TkTimeStateValue.COUNTING_DOWN_COMPLETED;
       };
 
       // 数値表示コンポーネント定義
@@ -94,6 +94,7 @@
       const TkTimer = function (callback) {
         this.tickCallback = callback;
         this.state = new TkTimerState();
+        this.state.goToSettingTime();
         this.reset();
       };
       TkTimer.prototype.clearTimer = function () {
