@@ -280,21 +280,11 @@
         this.notifyCurrentSec()
         this.state.goToSettingTime()
       }
-      TkTimer.prototype.addMinutes = function (min) {
-        if (!this.state.canGoToSettingTime()) {
-          return
-        }
-        this.currentSec += min * 60
-        this.notifyCurrentSec()
-        this.state.goToSettingTime()
-      }
       TkTimer.prototype.addSeconds = function (sec) {
         if (!this.state.canGoToSettingTime()) {
           return
         }
-        this.currentSec += sec
-        this.notifyCurrentSec()
-        this.state.goToSettingTime()
+        this.setSec(this.currentSec + sec);
       }
       TkTimer.prototype.onSecTick = function () {
         if (this.state.isCountingDown()) {
@@ -410,7 +400,7 @@
             this.timer.reset()
           },
           addMinutesButton: function (min) {
-            this.timer.addMinutes(min)
+            this.timer.addSeconds(min * 60)
           },
           addSecondsButton: function (sec) {
             this.timer.addSeconds(sec)
