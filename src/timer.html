@@ -83,13 +83,6 @@
           <button @click="resetButton" class="timer-control-button">
             リセット
           </button>
-          <button
-            @click="inputSecAndSetButton"
-            class="timer-control-button"
-            :disabled="!timer.state.canGoToSettingTime()"
-          >
-            秒数入力
-          </button>
         </div>
         <div>
           <button
@@ -407,13 +400,6 @@
           },
           setSecButton: function (sec) {
             this.timer.setSec(sec)
-          },
-          inputSecAndSetButton: function () {
-            const result = window.prompt('秒数を入力')
-            if (!result || result === '') {
-              return
-            }
-            this.setSecButton(Number(toHankakuNumber(result)))
           },
         },
         mounted: function () {},
