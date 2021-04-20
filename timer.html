@@ -13,6 +13,7 @@
         <div>00:00</div>
         <button @click="startButton">スタート</button>
         <button @click="stopButton">ストップ</button>
+        <button @click="restoreButton">鳴動停止</button>
         <button @click="resetButton">リセット</button>
         <button @click="addMinuteButton">分</button>
         <button @click="addSecondButton">秒</button>
@@ -48,7 +49,7 @@
         return this.state === TkTimerStateValue.INITIAL_STATE
       }
       TkTimerState.prototype.canGoToSettingTime = function () {
-        return this.isInitialState() || this.isSettingTime()
+        return this.isInitialState() || this.isSettingTime() || this.isCountingDownCompleted()
       }
       TkTimerState.prototype.goToSettingTime = function () {
         if (!this.canGoToSettingTime()) {
@@ -195,8 +196,8 @@
       }
       TkTimer.prototype.restore = function () {
         if (this.state.canGoToSettingTime()) {
-          this.currentSec = this.rememberedTargetSec
-          this.state.goToSettingTime()
+          this.setSec(this.rememberedTargetSec);
+          // 遷移は中でやってくれる
         }
       }
       TkTimer.prototype.reset = function () {
@@ -221,7 +222,12 @@
           stopButton: function () {
             this.timer.pause()
           },
-          resetButton: function () {},
+          restoreButton: function() {
+            this.timer.restore();
+          }, 
+          resetButton: function () {
+            this.timer.reset();
+          },
           addMinuteButton: function () {
             this.timer.addMinute()
           },
