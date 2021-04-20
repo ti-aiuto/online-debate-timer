@@ -76,10 +76,13 @@
           </button>
         </div>
         <div>
-          <button @click="addMinuteButton" class="timer-control-button" :disabled="!timer.state.canGoToSettingTime()">
+          <button @click="addMinutesButton(1)" class="timer-control-button" :disabled="!timer.state.canGoToSettingTime()">
             +分
           </button>
-          <button @click="addSecondButton" class="timer-control-button" :disabled="!timer.state.canGoToSettingTime()">
+          <button @click="addSecondsButton(10)" class="timer-control-button" :disabled="!timer.state.canGoToSettingTime()">
+            +10秒
+          </button>
+          <button @click="addSecondsButton(1)" class="timer-control-button" :disabled="!timer.state.canGoToSettingTime()">
             +秒
           </button>
         </div>
@@ -229,19 +232,19 @@
         this.notifyCurrentSec()
         this.state.goToSettingTime()
       }
-      TkTimer.prototype.addMinute = function () {
+      TkTimer.prototype.addMinutes = function (min) {
         if (!this.state.canGoToSettingTime()) {
           return
         }
-        this.currentSec += 60
+        this.currentSec += min * 60
         this.notifyCurrentSec()
         this.state.goToSettingTime()
       }
-      TkTimer.prototype.addSecond = function () {
+      TkTimer.prototype.addSeconds = function (sec) {
         if (!this.state.canGoToSettingTime()) {
           return
         }
-        this.currentSec += 1
+        this.currentSec += sec
         this.notifyCurrentSec()
         this.state.goToSettingTime()
       }
@@ -358,11 +361,11 @@
           resetButton: function () {
             this.timer.reset()
           },
-          addMinuteButton: function () {
-            this.timer.addMinute()
+          addMinutesButton: function (min) {
+            this.timer.addMinutes(min)
           },
-          addSecondButton: function () {
-            this.timer.addSecond()
+          addSecondsButton: function (sec) {
+            this.timer.addSeconds(sec)
           },
           setSecButton: function (sec) {
             this.timer.setSec(sec)
