@@ -158,6 +158,9 @@
       };
       TkTimer.prototype.start = function () {
         if (this.state.canGoToCountingDown()) {
+          if (this.currentSec === 0) {
+            return;
+          }
           this.state.goToCountingDown();
           this.tickStartedAtMsec = Date.now();
           const that = this;
@@ -169,11 +172,11 @@
         }
       };
       TkTimer.prototype.pause = function () {
-        if (!this.canGoToPausingCountDown()) {
+        if (!this.state.canGoToPausingCountDown()) {
           return;
         }
         this.clearTimer();
-        this.goToPausingCountDown();
+        this.state.goToPausingCountDown();
       };
       TkTimer.prototype.restore = function () {};
 
