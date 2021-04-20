@@ -35,32 +35,41 @@
       const TkTimerState = function () {
         this.state = TkTimeStateValue.INITIAL;
       };
+      TkTimerState.prototype.canGoToSettingTime = function () {
+        return true;
+      };
       TkTimerState.prototype.goToSettingTime = function () {
         this.state = TkTimeStateValue.SETTING_TIME;
       };
-      TkTimerState.prototype.canGoToSettingTime = function () {
+      TkTimerState.prototype.isSettingTime = function () {
+        this.state === TkTimeStateValue.SETTING_TIME;
+      };
+      TkTimerState.prototype.canGoToCountingDown = function () {
         return true;
       };
       TkTimerState.prototype.goToCountingDown = function () {
         this.state = TkTimeStateValue.COUNTING_DOWN;
       };
-      TkTimerState.prototype.canGoToCountingDown = function () {
-        return true;
-      };
       TkTimerState.prototype.isCountingDown = function () {
         return this.state === TkTimeStateValue.COUNTING_DOWN;
+      };
+      TkTimerState.prototype.canGoToPausingCountDown = function () {
+        return true;
       };
       TkTimerState.prototype.goToPausingCountDown = function () {
         this.state = TkTimeStateValue.PAUSING_COUNTING_DOWN;
       };
-      TkTimerState.prototype.canGoToPausingCountDown = function () {
+      TkTimerState.prototype.isPausingCountDown = function () {
+        this.state === TkTimeStateValue.PAUSING_COUNTING_DOWN;
+      };
+      TkTimerState.prototype.canGoToCountingDownCompleted = function () {
         return true;
       };
       TkTimerState.prototype.goToCountingDownCompleted = function () {
         this.state = TkTimeStateValue.COUNTING_DOWN_COMPLETED;
       };
-      TkTimerState.prototype.canGoToCountingDownCompleted = function () {
-        return true;
+      TkTimerState.prototype.isCountingDownCompleted = function () {
+        this.state === TkTimeStateValue.COUNTING_DOWN_COMPLETED;
       };
 
       // 数値表示コンポーネント定義
