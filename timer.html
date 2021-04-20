@@ -48,16 +48,16 @@
       TkTimer.prototype.isDownMode = function () {
         return this.currentMode === "down";
       };
-      TkTimer.prototype.setTargetSec = function (sec) {
+      TkTimer.prototype.setSec = function (sec) {
         if (!this.isDownMode()) {
           return;
         }
         if (this.isIntervalTimerWorking()) {
           return;
         }
-        this.targetSec = sec;
+        this.currentSec = sec;
         if (this.tickCallback) {
-          this.tickCallback(this.targetSec);
+          this.tickCallback(this.currentSec);
         }
       };
       TkTimer.prototype.addMinute = function () {
@@ -67,9 +67,9 @@
         if (this.isIntervalTimerWorking()) {
           return;
         }
-        this.targetSec += 60;
+        this.currentSec += 60;
         if (this.tickCallback) {
-          this.tickCallback(this.targetSec);
+          this.tickCallback(this.currentSec);
         }
       };
       TkTimer.prototype.addSecond = function () {
@@ -79,9 +79,9 @@
         if (this.isIntervalTimerWorking()) {
           return;
         }
-        this.targetSec += 1;
+        this.currentSec += 1;
         if (this.tickCallback) {
-          this.tickCallback(this.targetSec);
+          this.tickCallback(this.currentSec);
         }
       };
       TkTimer.prototype.onSecTick = function () {
@@ -114,11 +114,6 @@
         if (this.isIntervalTimerWorking()) {
           return;
         }
-        if (this.isDownMode()) {
-          this.currentSec = this.targetSec;
-        } else {
-          // いつかupも実装
-        }
         this.tickStartedAtMsec = Date.now();
         var that = this;
         this.timerId = setInterval(function () {
@@ -128,7 +123,10 @@
       TkTimer.prototype.pause = function () {
         this.clearTimer();
       };
+      TkTimer.prototype.restore = function() {
 
+      }
+    
       var app = new Vue({
         el: "#timer-ui",
         data: function () {
