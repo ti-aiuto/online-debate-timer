@@ -9,6 +9,86 @@
       // タイマーディスプレイ定義
       // タイマーUI定義
       // タイマーロジック定義
+      var TkTimer = function (callback) {
+        this.tickCallback = callback;
+        this.reset();
+      };
+      TkTimer.prototype.clearTimer = function () {
+        clearInterval(this.timerId);
+        this.timerId = null;
+        this.tickStartedAtMsec = null;
+        this.lastTimeTickedSec = 0;
+      };
+      TkTimer.prototype.reset = function () {
+        this.clearTimer();
+        this.targetSec = 0;
+        this.currentSec = 0;
+        this.currentMode = "down"; // カウントアップのタイマーも考慮しておく
+      };
+      TkTimer.prototype.isDownMode = function () {
+        return this.currentMode === "down";
+      };
+      TkTimer.prototype.addMinute = function () {
+        if (!this.isDownMode()) {
+          return;
+        }
+        this.targetSec += 60;
+      };
+      TkTimer.prototype.addSecond = function () {
+        if (!this.isDownMode()) {
+          return;
+        }
+        this.targetSec += 1;
+      };
+      TkTimer.prototype.onSecTick = function () {
+        if (this.isDownMode()) {
+          this.currentSec -= 1;
+          if (this.tickCallback) {
+            this.tickCallback(this.currentSec);
+          }
+          if (this.currentSec === 0) {
+            this.clearTimer();
+          }
+        } else {
+          // いつかupも実装
+        }
+      };
+      TkTimer.prototype.onIntervalTick = function () {
+        // スタート時点の時刻と現在時刻を比較して正確な経過時間を計測する
+        var currentTime = Date.now();
+        var d = currentTime - this.tickStartedAtMsec;
+        var timeTickedSec = Math.floor(d / 1000);
+        if (timeTickedSec !== this.lastTimeTickedSec) {
+          this.onSecTick();
+          this.lastTimeTickedSec = timeTickedSec;
+        }
+      };
+      TkTimer.prototype.start = function () {
+        if (this.isDownMode()) {
+          this.currentSec = this.targetSec;
+        } else {
+          // いつかupも実装
+        }
+        this.tickStartedAtMsec = Date.now();
+        var that = this;
+        this.timerId = setInterval(function () {
+          that.onIntervalTick();
+        }, 50);
+      };
+      TkTimer.prototype.pause = function () {
+        this.clearTimer();
+      };
+
+      var t = new TkTimer(function (sec) {
+        console.log(sec);
+        if (sec === 0) {
+          console.log("完了");
+        }
+      });
+      t.addSecond();
+      t.addSecond();
+      t.addSecond();
+      t.start();
     </script>
   </head>
   <body>
@@ -19,6 +99,7 @@
       <button>ストップ</button>
       <button>リセット</button>
       <button>分</button>
+      <button>秒</button>
       <button>1分</button>
       <button>2分</button>
       <button>3分</button>
