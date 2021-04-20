@@ -8,19 +8,20 @@
   </head>
   <body>
     <div id="timer-ui">
-      <div></div>
+      <div>{{currentSec}}</div>
       <div>
         <div>00:00</div>
-        <button>スタート</button>
-        <button>ストップ</button>
-        <button>リセット</button>
-        <button>分</button>
-        <button>秒</button>
+        <button @click="startButton">スタート</button>
+        <button @click="stopButton">ストップ</button>
+        <button @click="resetButton">リセット</button>
+        <button @click="addMinuteButton">分</button>
+        <button @click="addSecondButton">秒</button>
         <button>1分</button>
         <button>2分</button>
         <button>3分</button>
         <button>4分</button>
         <button>6分</button>
+        <button>秒数入力</button>
       </div>
     </div>
     <script type="text/javascript">
@@ -51,6 +52,9 @@
         if (!this.isDownMode()) {
           return;
         }
+        if (this.isIntervalTimerWorking()) {
+          return;
+        }
         this.targetSec = sec;
         if (this.tickCallback) {
           this.tickCallback(this.targetSec);
@@ -60,6 +64,9 @@
         if (!this.isDownMode()) {
           return;
         }
+        if (this.isIntervalTimerWorking()) {
+          return;
+        }
         this.targetSec += 60;
         if (this.tickCallback) {
           this.tickCallback(this.targetSec);
@@ -67,6 +74,9 @@
       };
       TkTimer.prototype.addSecond = function () {
         if (!this.isDownMode()) {
+          return;
+        }
+        if (this.isIntervalTimerWorking()) {
           return;
         }
         this.targetSec += 1;
@@ -97,7 +107,13 @@
           this.lastTimeTickedSec = timeTickedSec;
         }
       };
+      TkTimer.prototype.isIntervalTimerWorking = function () {
+        return this.timerId !== null;
+      };
       TkTimer.prototype.start = function () {
+        if (this.isIntervalTimerWorking()) {
+          return;
+        }
         if (this.isDownMode()) {
           this.currentSec = this.targetSec;
         } else {
@@ -120,13 +136,23 @@
         },
         methods: {
           onTick: function (sec) {
-            this.currentSec = 0;
+            this.currentSec = sec;
           },
-          startButton: function() {
-
-          }, 
-          
+          startButton: function () {
+            this.timer.start();
+          },
+          stopButton: function () {
+            this.timer.pause();
+          },
+          resetButton: function () {},
+          addMinuteButton: function () {
+            this.timer.addMinute();
+          },
+          addSecondButton: function () {
+            this.timer.addSecond();
+          },
         },
+        mounted: function () {},
       });
     </script>
   </body>
