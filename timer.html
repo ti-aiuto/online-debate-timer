@@ -113,17 +113,6 @@
         this.clearTimer();
       };
 
-      var t = new TkTimer(function (sec) {
-        console.log(sec);
-        if (sec === 0) {
-          console.log("完了");
-        }
-      });
-      t.addSecond();
-      t.addSecond();
-      t.addSecond();
-      t.start();
-
       var app = new Vue({
         el: "#timer-ui",
         data: function () {
