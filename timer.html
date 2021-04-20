@@ -25,34 +25,41 @@
       </div>
     </div>
     <script type="text/javascript">
-      var TkTimerState = function () {
-        this.state = "initial";
+      const TkTimeStateValue = Object.freeze({
+        INITIAL: 'INITIAL', 
+        SETTING_TIME: 'SETTING_TIME', 
+        COUNTING_DOWN: 'COUNTING_DOWN', 
+        PAUSING_COUNTING_DOWN: 'PAUSING_COUNTING_DOWN', 
+        COUNTING_DOWN_COMPLETED: 'COUNTING_DOWN_COMPLETED'
+      });
+      const TkTimerState = function () {
+        this.state = TkTimeStateValue.INITIAL;
       };
-      TkTimerState.prototype.goToSetTime = function () {
-        this.state = "setTime";
+      TkTimerState.prototype.goToSettingTime = function () {
+        this.state = TkTimeStateValue.SETTING_TIME;
       };
-      TkTimerState.prototype.canGoSetTime = function () {
+      TkTimerState.prototype.canGoToSettingTime = function () {
         return true;
       };
       TkTimerState.prototype.goToCountingDown = function () {
-        this.state = "counting_down";
+        this.state = TkTimeStateValue.COUNTING_DOWN;
       };
       TkTimerState.prototype.canGoToCountingDown = function () {
         return true;
       };
       TkTimerState.prototype.isCountingDown = function () {
-        return this.state === "counting_down";
+        return this.state === TkTimeStateValue.COUNTING_DOWN;
       };
       TkTimerState.prototype.goToPausingCountDown = function () {
-        this.state = "pausing_count_down";
+        this.state = TkTimeStateValue.PAUSING_COUNTING_DOWN;
       };
       TkTimerState.prototype.canGoToPausingCountDown = function () {
         return true;
       };
-      TkTimerState.prototype.goToCountDownCompleted = function () {
-        this.state = "count_down_completed";
+      TkTimerState.prototype.goToCountingDownCompleted = function () {
+        this.state = TkTimeStateValue.COUNTING_DOWN_COMPLETED;
       };
-      TkTimerState.prototype.canGoToCountDownCompleted = function () {
+      TkTimerState.prototype.canGoToCountingDownCompleted = function () {
         return true;
       };
 
@@ -60,7 +67,7 @@
       // タイマーディスプレイ定義
       // タイマーUI定義
       // タイマーロジック定義
-      var TkTimer = function (callback) {
+      const TkTimer = function (callback) {
         this.tickCallback = callback;
         this.state = new TkTimerState();
         this.reset();
@@ -82,21 +89,21 @@
         }
       };
       TkTimer.prototype.setSec = function (sec) {
-        if (!this.state.canGoSetTime()) {
+        if (!this.state.canGoToSettingTime()) {
           return;
         }
         this.currentSec = sec;
         this.notifyCurrentSec();
       };
       TkTimer.prototype.addMinute = function () {
-        if (!this.state.canGoSetTime()) {
+        if (!this.state.canGoToSettingTime()) {
           return;
         }
         this.currentSec += 60;
         this.notifyCurrentSec();
       };
       TkTimer.prototype.addSecond = function () {
-        if (!this.state.canGoSetTime()) {
+        if (!this.state.canGoToSettingTime()) {
           return;
         }
         this.currentSec += 1;
@@ -107,7 +114,7 @@
           this.currentSec -= 1;
           this.notifyCurrentSec();
           if (this.currentSec === 0) {
-            this.state.goToCountDownCompleted();
+            this.state.goToCountingDownCompleted();
             this.clearTimer();
           }
         } else {
@@ -116,9 +123,9 @@
       };
       TkTimer.prototype.onIntervalTick = function () {
         // スタート時点の時刻と現在時刻を比較して正確な経過時間を計測する
-        var currentTime = Date.now();
-        var d = currentTime - this.tickStartedAtMsec;
-        var timeTickedSec = Math.floor(d / 1000);
+        const currentTime = Date.now();
+        const d = currentTime - this.tickStartedAtMsec;
+        const timeTickedSec = Math.floor(d / 1000);
         if (timeTickedSec !== this.lastTimeTickedSec) {
           this.onSecTick();
           this.lastTimeTickedSec = timeTickedSec;
@@ -127,7 +134,7 @@
       TkTimer.prototype.start = function () {
         this.state.goToCountingDown();
         this.tickStartedAtMsec = Date.now();
-        var that = this;
+        const that = this;
         this.timerId = setInterval(function () {
           that.onIntervalTick();
         }, 50);
@@ -137,7 +144,7 @@
       };
       TkTimer.prototype.restore = function () {};
 
-      var app = new Vue({
+      const app = new Vue({
         el: "#timer-ui",
         data: function () {
           return { currentSec: 0, timer: new TkTimer(this.onTick) };
