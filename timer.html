@@ -209,15 +209,15 @@
         }
       }
 
-      const zeroPadding = function(number) {
-        return ('000' + number).slice(-2);
+      const zeroPadding = function (number) {
+        return ('000' + number).slice(-2)
       }
 
-      const toHankakuNumber =  function(str) {
-    return str.replace(/[０-９]/g, function(s) {
-        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
-    });
-}
+      const toHankakuNumber = function (str) {
+        return str.replace(/[０-９]/g, function (s) {
+          return String.fromCharCode(s.charCodeAt(0) - 0xfee0)
+        })
+      }
 
       // タイマーの数値表示部分のコンポーネント
       Vue.component('time-display', {
@@ -229,13 +229,13 @@
           },
         },
         computed: {
-          minutes: function() {
-            return zeroPadding(Math.floor(this.sec / 60));
-          }, 
-          seconds:  function() {
-            return zeroPadding(this.sec % 60);
-          }
-        }
+          minutes: function () {
+            return zeroPadding(Math.floor(this.sec / 60))
+          },
+          seconds: function () {
+            return zeroPadding(this.sec % 60)
+          },
+        },
       })
 
       // タイマーUI
@@ -266,16 +266,16 @@
           addSecondButton: function () {
             this.timer.addSecond()
           },
-          setSecButton: function(sec) {
-            this.timer.setSec(sec);
-          }, 
-          inputSecAndSetButton: function() {
-            const result = window.prompt('秒数を入力');
+          setSecButton: function (sec) {
+            this.timer.setSec(sec)
+          },
+          inputSecAndSetButton: function () {
+            const result = window.prompt('秒数を入力')
             if (!result || result === '') {
-              return;
+              return
             }
             this.setSecButton(Number(toHankakuNumber(result)))
-          }
+          },
         },
         mounted: function () {},
       })
