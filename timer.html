@@ -40,6 +40,9 @@
       TkTimerState.prototype.canGoToCountingDown = function () {
         return true;
       };
+      TkTimerState.prototype.isCountingDown = function () {
+        return this.state === "counting_down";
+      };
       TkTimerState.prototype.goToPausingCountDown = function () {
         this.state = "pausing_count_down";
       };
@@ -72,10 +75,6 @@
         this.clearTimer();
         this.targetSec = 0;
         this.currentSec = 0;
-        this.currentMode = "down"; // カウントアップのタイマーも考慮しておく
-      };
-      TkTimer.prototype.isDownMode = function () {
-        return this.currentMode === "down";
       };
       TkTimer.prototype.notifyCurrentSec = function () {
         if (this.tickCallback) {
@@ -104,10 +103,11 @@
         this.notifyCurrentSec();
       };
       TkTimer.prototype.onSecTick = function () {
-        if (this.isDownMode()) {
+        if (this.state.isCountingDown()) {
           this.currentSec -= 1;
           this.notifyCurrentSec();
           if (this.currentSec === 0) {
+            this.state.goToCountDownCompleted();
             this.clearTimer();
           }
         } else {
@@ -125,6 +125,7 @@
         }
       };
       TkTimer.prototype.start = function () {
+        this.state.goToCountingDown();
         this.tickStartedAtMsec = Date.now();
         var that = this;
         this.timerId = setInterval(function () {
