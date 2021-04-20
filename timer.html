@@ -48,6 +48,11 @@
       TkTimer.prototype.isDownMode = function () {
         return this.currentMode === "down";
       };
+      TkTimer.prototype.notifyCurrentSec = function () {
+        if (this.tickCallback) {
+          this.tickCallback(this.currentSec);
+        }
+      };
       TkTimer.prototype.setSec = function (sec) {
         if (!this.isDownMode()) {
           return;
@@ -56,9 +61,7 @@
           return;
         }
         this.currentSec = sec;
-        if (this.tickCallback) {
-          this.tickCallback(this.currentSec);
-        }
+        this.notifyCurrentSec();
       };
       TkTimer.prototype.addMinute = function () {
         if (!this.isDownMode()) {
@@ -68,9 +71,7 @@
           return;
         }
         this.currentSec += 60;
-        if (this.tickCallback) {
-          this.tickCallback(this.currentSec);
-        }
+        this.notifyCurrentSec();
       };
       TkTimer.prototype.addSecond = function () {
         if (!this.isDownMode()) {
@@ -80,16 +81,12 @@
           return;
         }
         this.currentSec += 1;
-        if (this.tickCallback) {
-          this.tickCallback(this.currentSec);
-        }
+        this.notifyCurrentSec();
       };
       TkTimer.prototype.onSecTick = function () {
         if (this.isDownMode()) {
           this.currentSec -= 1;
-          if (this.tickCallback) {
-            this.tickCallback(this.currentSec);
-          }
+          this.notifyCurrentSec();
           if (this.currentSec === 0) {
             this.clearTimer();
           }
@@ -123,10 +120,8 @@
       TkTimer.prototype.pause = function () {
         this.clearTimer();
       };
-      TkTimer.prototype.restore = function() {
+      TkTimer.prototype.restore = function () {};
 
-      }
-    
       var app = new Vue({
         el: "#timer-ui",
         data: function () {
