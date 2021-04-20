@@ -25,12 +25,41 @@
       </div>
     </div>
     <script type="text/javascript">
+      var TkTimerState = function () {
+        this.state = "initial";
+      };
+      TkTimerState.prototype.goToSetTime = function () {
+        this.state = "setTime";
+      };
+      TkTimerState.prototype.canGoSetTime = function () {
+        return true;
+      };
+      TkTimerState.prototype.goToCountingDown = function () {
+        this.state = "counting_down";
+      };
+      TkTimerState.prototype.canGoToCountingDown = function () {
+        return true;
+      };
+      TkTimerState.prototype.goToPausingCountDown = function () {
+        this.state = "pausing_count_down";
+      };
+      TkTimerState.prototype.canGoToPausingCountDown = function () {
+        return true;
+      };
+      TkTimerState.prototype.goToCountDownCompleted = function () {
+        this.state = "count_down_completed";
+      };
+      TkTimerState.prototype.canGoToCountDownCompleted = function () {
+        return true;
+      };
+
       // 数値表示コンポーネント定義
       // タイマーディスプレイ定義
       // タイマーUI定義
       // タイマーロジック定義
       var TkTimer = function (callback) {
         this.tickCallback = callback;
+        this.state = new TkTimerState();
         this.reset();
       };
       TkTimer.prototype.clearTimer = function () {
@@ -54,30 +83,21 @@
         }
       };
       TkTimer.prototype.setSec = function (sec) {
-        if (!this.isDownMode()) {
-          return;
-        }
-        if (this.isIntervalTimerWorking()) {
+        if (!this.state.canGoSetTime()) {
           return;
         }
         this.currentSec = sec;
         this.notifyCurrentSec();
       };
       TkTimer.prototype.addMinute = function () {
-        if (!this.isDownMode()) {
-          return;
-        }
-        if (this.isIntervalTimerWorking()) {
+        if (!this.state.canGoSetTime()) {
           return;
         }
         this.currentSec += 60;
         this.notifyCurrentSec();
       };
       TkTimer.prototype.addSecond = function () {
-        if (!this.isDownMode()) {
-          return;
-        }
-        if (this.isIntervalTimerWorking()) {
+        if (!this.state.canGoSetTime()) {
           return;
         }
         this.currentSec += 1;
@@ -104,13 +124,7 @@
           this.lastTimeTickedSec = timeTickedSec;
         }
       };
-      TkTimer.prototype.isIntervalTimerWorking = function () {
-        return this.timerId !== null;
-      };
       TkTimer.prototype.start = function () {
-        if (this.isIntervalTimerWorking()) {
-          return;
-        }
         this.tickStartedAtMsec = Date.now();
         var that = this;
         this.timerId = setInterval(function () {
