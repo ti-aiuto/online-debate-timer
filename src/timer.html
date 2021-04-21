@@ -488,7 +488,6 @@
             timer: timer,
             timeUpAudio: timeUpAudio,
             soundEnabled: true,
-            message: null,
           }
         },
         methods: {
@@ -515,7 +514,6 @@
           },
           startButton: function () {
             this.timer.start()
-            this.message = null
           },
           stopButton: function () {
             this.stopTimeUpAudio()
@@ -524,12 +522,10 @@
           restoreButton: function () {
             this.stopTimeUpAudio()
             this.timer.restore()
-            this.message = null
           },
           resetButton: function () {
             this.stopTimeUpAudio()
             this.timer.reset()
-            this.message = null
           },
           addMinutesButton: function (min) {
             this.stopTimeUpAudio()
