@@ -83,7 +83,7 @@
 
       .timer__how-to-use {
         font-size: 0.7rem;
-        color: #333;
+        color: #555;
         margin: 0 20px 4px 20px;
       }
 
@@ -210,7 +210,7 @@
               </button>
 
               <button
-              v-if="soundEnabled"
+                v-if="soundEnabled"
                 @click="disableSoundButton"
                 class="timer__control-button"
               >
@@ -218,7 +218,7 @@
               </button>
 
               <button
-              v-if="!soundEnabled"
+                v-if="!soundEnabled"
                 @click="enableSoundButton"
                 class="timer__control-button"
               >
@@ -229,7 +229,7 @@
         </div>
 
         <div class="timer__how-to-use">
-          ※iOSで効果音を鳴らしたい場合は「テスト再生」を押してください
+          ※iOSで効果音を鳴らしたい場合は一度「テスト再生」を押してください
         </div>
         <div class="timer__copyright">
           <a href="https://github.com/ti-aiuto/online-debate-timer"
