@@ -136,7 +136,7 @@
               </button>
               <button
                 v-if="isCountingDown"
-                @click="stopButton"
+                @click="pauseButton"
                 class="timer__control-button"
                 :disabled="!canGoToPausingCountDown"
               >
@@ -529,7 +529,7 @@
           startButton: function () {
             this.timer.start()
           },
-          stopButton: function () {
+          pauseButton: function () {
             this.timer.pause()
           },
           restoreButton: function () {
