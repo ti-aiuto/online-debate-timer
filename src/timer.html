@@ -35,14 +35,18 @@
         margin: 12px;
       }
 
-      .timer__time-display-digits {
+      .timer__time-display {
         margin: 20px;
+        margin-bottom: 16px;
+        background-color: #bbc8ba;
+      }
+
+      .timer__time-display-digits {
+        padding: 8px 0;
         font-size: 7rem;
         line-height: 7rem;
         text-align: center;
         font-family: 'Inconsolata', monospace;
-        margin-bottom: 16px;
-        background-color: #bbc8ba;
       }
 
       .timer__controls {
@@ -80,16 +84,6 @@
         margin-bottom: 24px;
       }
 
-      .timer__message {
-        display: block;
-        margin: auto;
-        font-size: 0.9rem;
-        line-height: 1.1rem;
-        width: 300px;
-        margin-bottom: 16px;
-        border: solid 1px #ccc;
-      }
-
       .timer__copyright,
       .timer__copyright a {
         font-size: 0.7rem;
@@ -102,10 +96,12 @@
     <div class="container">
       <div class="timer">
         <div id="timer-ui">
-          <time-display
-            :sec="currentSec"
-            class="timer__time-display-digits"
-          ></time-display>
+          <div class="timer__time-display">
+            <time-display
+              :sec="currentSec"
+              class="timer__time-display-digits"
+            ></time-display>
+          </div>
           <div class="timer__timer-controls">
             <div class="timer__controls-row">
               <button
