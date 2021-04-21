@@ -330,7 +330,7 @@
         if (this.state.isCountingDown()) {
           this.currentSec -= 1
           this.notifyCurrentSec()
-          if (this.currentSec === 0) {
+          if (this.currentSec <= 0) {
             if (this.countDownCompleteCallback) {
               this.countDownCompleteCallback()
             }
