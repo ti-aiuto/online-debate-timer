@@ -108,7 +108,7 @@
               class="timer__time-display-digits"
             ></time-display>
 
-            <div v-if="soundEnabled" class="timer__sound-badge">完了音ON</div>
+            <div class="timer__sound-badge">{{soundEnabled ? "📢" : "🔇"}}</div>
           </div>
           <div class="timer__controls">
             <div class="timer__controls-row">
