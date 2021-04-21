@@ -55,13 +55,18 @@
       }
 
       .timer__control-button {
-        font-size: 1.2rem;
+        font-size: 1.4rem;
         margin: 6px;
         padding: 8px;
-        border-radius: 12px;
+        border-radius: 16px;
         font-family: monospace;
         touch-action: manipulation;
         flex-grow: 1;
+      }
+
+      .timer__control-button-label-small {
+        padding: 4px;
+        font-size: 1rem;
       }
 
       .timer__control-button:disabled {
@@ -104,6 +109,7 @@
           <div class="timer__timer-controls">
             <div class="timer__controls-row">
               <button
+                v-if="!isCountingDown && !isCountingDownCompleted"
                 @click="startButton"
                 class="timer__control-button"
                 :disabled="!canGoToCountingDown"
@@ -111,23 +117,24 @@
                 スタート
               </button>
               <button
+                v-if="isCountingDown"
                 @click="stopButton"
                 class="timer__control-button"
                 :disabled="!canGoToPausingCountDown"
               >
                 一時停止
               </button>
-            </div>
-            <div class="timer__controls-row">
-              <button @click="resetButton" class="timer__control-button">
-                リセット
-              </button>
               <button
+                v-if="isCountingDownCompleted"
                 @click="restoreButton"
                 class="timer__control-button"
                 :disabled="!isCountingDownCompleted"
               >
                 鳴動停止
+              </button>
+
+              <button @click="resetButton" class="timer__control-button">
+                リセット
               </button>
             </div>
             <div class="timer__controls-row">
@@ -159,39 +166,42 @@
                 class="timer__control-button"
                 :disabled="!canGoToSettingTime"
               >
-                1分
+                1<span class="timer__control-button-label-small">分</span>
               </button>
               <button
                 @click="setSecButton(120)"
                 class="timer__control-button"
                 :disabled="!canGoToSettingTime"
               >
-                2分
+                2<span class="timer__control-button-label-small">分</span>
               </button>
               <button
                 @click="setSecButton(180)"
                 class="timer__control-button"
                 :disabled="!canGoToSettingTime"
               >
-                3分
+                3<span class="timer__control-button-label-small">分</span>
               </button>
               <button
                 @click="setSecButton(240)"
                 class="timer__control-button"
                 :disabled="!canGoToSettingTime"
               >
-                4分
+                4<span class="timer__control-button-label-small">分</span>
               </button>
               <button
                 @click="setSecButton(360)"
                 class="timer__control-button"
                 :disabled="!canGoToSettingTime"
               >
-                6分
+                6<span class="timer__control-button-label-small">分</span>
               </button>
             </div>
             <div class="timer__controls-row">
-              <button @click="testPlaySoundButton" class="timer__control-button">
+              <button
+                @click="testPlaySoundButton"
+                class="timer__control-button"
+              >
                 音テスト再生
               </button>
               <button
@@ -210,9 +220,9 @@
               </button>
             </div>
           </div>
-  
+
           <input type="text" readonly :value="message" class="message" />
-  
+
           <div class="timer__how-to-use">
             iOSで音を有効化する場合は一度「音テスト再生」を押してください
           </div>
@@ -224,7 +234,6 @@
           >
         </div>
       </div>
-  
     </div>
 
     <script type="text/javascript">
@@ -545,6 +554,9 @@
           },
           canGoToPausingCountDown: function () {
             return this.timer.state.canGoToPausingCountDown()
+          },
+          isCountingDown: function () {
+            return this.timer.state.isCountingDown()
           },
           isCountingDownCompleted: function () {
             return this.timer.state.isCountingDownCompleted()
