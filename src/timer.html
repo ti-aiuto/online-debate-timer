@@ -25,7 +25,7 @@
       }
 
       .container {
-        max-width: 430px;
+        max-width: 380px;
         margin: auto;
       }
 
@@ -70,15 +70,24 @@
       .timer__control-button {
         font-size: 1.1rem;
         margin: 6px;
-        padding: 8px;
-        border-radius: 16px;
+        padding: 12px 8px;
+        border-radius: 20px;
         font-family: monospace;
         touch-action: manipulation;
         flex-grow: 1;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 2px #999;
+        font-weight: bold;
+        color: #555;
       }
 
+      .timer__control-button:active {
+        box-shadow: 0 4px 2px #999;
+      }
+      
       .timer__control-button:disabled {
-        opacity: 0.5;
+        color: #ccc;        
       }
 
       .timer__how-to-use {
