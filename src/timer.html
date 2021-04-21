@@ -261,6 +261,14 @@
       const TkTimerState = function () {
         this.state = TkTimerStateValue.INITIAL_STATE
       }
+      TkTimerState.prototype.setStateChangedCallback = function (callback) {
+        this.stateChangedCallback = callback
+      }
+      TkTimerState.prototype.notifyStateChanged = function () {
+        if (this.stateChangedCallback) {
+          this.stateChangedCallback(this.state)
+        }
+      }
       TkTimerState.prototype.canGoToInitialState = function () {
         return true // どこからも許可
       }
@@ -269,6 +277,7 @@
           return
         }
         this.state = TkTimerStateValue.INITIAL_STATE
+        this.notifyStateChanged()
       }
       TkTimerState.prototype.isInitialState = function () {
         return this.state === TkTimerStateValue.INITIAL_STATE
@@ -285,6 +294,7 @@
           return
         }
         this.state = TkTimerStateValue.SETTING_TIME
+        this.notifyStateChanged()
       }
       TkTimerState.prototype.isSettingTime = function () {
         return this.state === TkTimerStateValue.SETTING_TIME
@@ -297,6 +307,7 @@
           return
         }
         this.state = TkTimerStateValue.COUNTING_DOWN
+        this.notifyStateChanged()
       }
       TkTimerState.prototype.isCountingDown = function () {
         return this.state === TkTimerStateValue.COUNTING_DOWN
@@ -309,6 +320,7 @@
           return
         }
         this.state = TkTimerStateValue.PAUSING_COUNTING_DOWN
+        this.notifyStateChanged()
       }
       TkTimerState.prototype.isPausingCountDown = function () {
         return this.state === TkTimerStateValue.PAUSING_COUNTING_DOWN
@@ -321,6 +333,7 @@
           return
         }
         this.state = TkTimerStateValue.COUNTING_DOWN_COMPLETED
+        this.notifyStateChanged()
       }
       TkTimerState.prototype.isCountingDownCompleted = function () {
         return this.state === TkTimerStateValue.COUNTING_DOWN_COMPLETED
@@ -335,9 +348,6 @@
       }
       TkTimer.prototype.setTickCallback = function (callback) {
         this.tickCallback = callback
-      }
-      TkTimer.prototype.setCountDownCompleteCallback = function (callback) {
-        this.countDownCompleteCallback = callback
       }
       TkTimer.prototype.clearTimer = function () {
         clearInterval(this.timerId)
@@ -384,11 +394,8 @@
           this.currentSec -= 1
           this.notifyCurrentSec()
           if (this.currentSec <= 0) {
-            if (this.countDownCompleteCallback) {
-              this.countDownCompleteCallback()
-            }
-            this.state.goToCountingDownCompleted()
             this.clearTimer()
+            this.state.goToCountingDownCompleted()
           }
         } else {
           // いつかupも実装
@@ -480,9 +487,7 @@
           const timer = new TkTimer()
           timer.setTickCallback(this.onTick)
           const timeUpAudio = new Audio('timer-timeup.mp3')
-          timeUpAudio.loop = true
           timeUpAudio.load()
-          timer.setCountDownCompleteCallback(this.onCountDownComplete)
           return {
             currentSec: 0,
             timer: timer,
@@ -494,8 +499,11 @@
           onTick: function (sec) {
             this.currentSec = sec
           },
-          onCountDownComplete: function () {
-            this.startTimeUpAudio()
+          onStateChanged: function () {
+            this.stopTimeUpAudio()
+            if (this.timer.state.isCountingDownCompleted()) {
+              this.startTimeUpAudio()
+            }
           },
           startTimeUpAudio: function () {
             if (!this.soundEnabled) {
@@ -516,27 +524,21 @@
             this.timer.start()
           },
           stopButton: function () {
-            this.stopTimeUpAudio()
             this.timer.pause()
           },
           restoreButton: function () {
-            this.stopTimeUpAudio()
             this.timer.restore()
           },
           resetButton: function () {
-            this.stopTimeUpAudio()
             this.timer.reset()
           },
           addMinutesButton: function (min) {
-            this.stopTimeUpAudio()
             this.timer.addSeconds(min * 60)
           },
           addSecondsButton: function (sec) {
-            this.stopTimeUpAudio()
             this.timer.addSeconds(sec)
           },
           setSecButton: function (sec) {
-            this.stopTimeUpAudio()
             this.timer.setSec(sec)
           },
           testPlaySoundButton: function () {
