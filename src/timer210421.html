@@ -15,10 +15,6 @@
         padding: 0;
       }
 
-      body {
-        font-family: sans-serif;
-      }
-
       .header {
         text-align: center;
         margin-bottom: 16px;
@@ -176,6 +172,7 @@
           </button>
           <button
             v-if="!soundEnabled"
+            :disabled="!testPlayFinished"
             @click="enableSoundButton"
             class="timer-control-button"
           >
@@ -194,7 +191,7 @@
       <input type="text" readonly :value="message" class="message" />
 
       <div class="how-to-use">
-        iOSで音を有効化する場合は一度「音テスト再生」を押してください
+        音を有効化する場合は先に「音テスト再生」を押してください
       </div>
     </div>
     <div class="copyright">
@@ -441,6 +438,7 @@
             currentSec: 0,
             timer: timer,
             timeUpAudio: timeUpAudio,
+            testPlayFinished: false,
             soundEnabled: false,
             message: null,
           }
@@ -505,6 +503,7 @@
               this.timeUpAudio.loop = false
               this.timeUpAudio.play()
             } catch (e) {}
+            this.testPlayFinished = true
           },
           enableSoundButton: function () {
             this.soundEnabled = true
