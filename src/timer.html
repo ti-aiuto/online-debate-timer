@@ -68,6 +68,16 @@
         flex-grow: 1;
       }
 
+      .timer__checkbox {
+        margin: 12px;
+        -ms-transform: scale(1.3, 1.3);
+        transform: scale(1.3, 1.3);
+      }
+
+      .timer__checkbox-label {
+        font-size: 1.1rem;
+      }
+
       .timer__control-button-label-small {
         padding: 4px;
         font-size: 1rem;
@@ -215,9 +225,16 @@
                 音を無効化
               </button>
             </div>
+            <div class="timer__controls-row">
+              <label class="timer__checkbox-label"
+                ><input
+                  type="checkbox"
+                  v-model="soundEnabled"
+                  class="timer__checkbox"
+                />カウント完了時に効果音を鳴らす</label
+              >
+            </div>
           </div>
-
-          <input type="text" readonly :value="message" class="message" />
 
           <div class="timer__how-to-use">
             iOSで音を有効化する場合は一度「音テスト再生」を押してください
@@ -470,7 +487,7 @@
             currentSec: 0,
             timer: timer,
             timeUpAudio: timeUpAudio,
-            soundEnabled: false,
+            soundEnabled: true,
             message: null,
           }
         },
