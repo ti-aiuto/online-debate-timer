@@ -24,36 +24,44 @@
         font-family: sans-serif;
       }
 
-      .timer {
+      .container {
+        max-width: 430px;
+        margin: auto;
       }
 
-      .timer__header {
-        text-align: center;
-        margin-bottom: 16px;
-        margin-top: 8px;
-        color: #333;
+      .timer {
+        border: solid 2px #777;
+        border-radius: 8px;
+        margin: 12px;
       }
 
       .timer__time-display-digits {
+        margin: 20px;
         font-size: 7rem;
         line-height: 7rem;
         text-align: center;
         font-family: 'Inconsolata', monospace;
         margin-bottom: 16px;
+        background-color: #bbc8ba;
       }
 
       .timer__controls {
         margin-bottom: 16px;
-        text-align: center;
+      }
+
+      .timer__controls-row {
+        display: flex;
+        margin: 0 12px;
       }
 
       .timer__control-button {
-        font-size: 1.4rem;
-        margin: 8px;
+        font-size: 1.2rem;
+        margin: 6px;
         padding: 8px;
         border-radius: 12px;
         font-family: monospace;
         touch-action: manipulation;
+        flex-grow: 1;
       }
 
       .timer__control-button:disabled {
@@ -86,131 +94,139 @@
     </style>
   </head>
   <body>
-    <div class="header">カウントダウンタイマー</div>
-    <div id="timer-ui">
-      <time-display :sec="currentSec"></time-display>
-      <div class="timer-control">
-        <div>
-          <button
-            @click="startButton"
-            class="timer-control-button"
-            :disabled="!canGoToCountingDown"
-          >
-            スタート
-          </button>
-          <button
-            @click="stopButton"
-            class="timer-control-button"
-            :disabled="!canGoToPausingCountDown"
-          >
-            一時停止
-          </button>
+    <div class="container">
+      <div class="timer">
+        <div id="timer-ui">
+          <time-display
+            :sec="currentSec"
+            class="timer__time-display-digits"
+          ></time-display>
+          <div class="timer__timer-controls">
+            <div class="timer__controls-row">
+              <button
+                @click="startButton"
+                class="timer__control-button"
+                :disabled="!canGoToCountingDown"
+              >
+                スタート
+              </button>
+              <button
+                @click="stopButton"
+                class="timer__control-button"
+                :disabled="!canGoToPausingCountDown"
+              >
+                一時停止
+              </button>
+            </div>
+            <div class="timer__controls-row">
+              <button @click="resetButton" class="timer__control-button">
+                リセット
+              </button>
+              <button
+                @click="restoreButton"
+                class="timer__control-button"
+                :disabled="!isCountingDownCompleted"
+              >
+                鳴動停止
+              </button>
+            </div>
+            <div class="timer__controls-row">
+              <button
+                @click="addMinutesButton(1)"
+                class="timer__control-button"
+                :disabled="!canGoToSettingTime"
+              >
+                +分
+              </button>
+              <button
+                @click="addSecondsButton(10)"
+                class="timer__control-button"
+                :disabled="!canGoToSettingTime"
+              >
+                +10秒
+              </button>
+              <button
+                @click="addSecondsButton(1)"
+                class="timer__control-button"
+                :disabled="!canGoToSettingTime"
+              >
+                +秒
+              </button>
+            </div>
+            <div class="timer__controls-row">
+              <button
+                @click="setSecButton(60)"
+                class="timer__control-button"
+                :disabled="!canGoToSettingTime"
+              >
+                1分
+              </button>
+              <button
+                @click="setSecButton(120)"
+                class="timer__control-button"
+                :disabled="!canGoToSettingTime"
+              >
+                2分
+              </button>
+              <button
+                @click="setSecButton(180)"
+                class="timer__control-button"
+                :disabled="!canGoToSettingTime"
+              >
+                3分
+              </button>
+              <button
+                @click="setSecButton(240)"
+                class="timer__control-button"
+                :disabled="!canGoToSettingTime"
+              >
+                4分
+              </button>
+              <button
+                @click="setSecButton(360)"
+                class="timer__control-button"
+                :disabled="!canGoToSettingTime"
+              >
+                6分
+              </button>
+            </div>
+            <div class="timer__controls-row">
+              <button @click="testPlaySoundButton" class="timer__control-button">
+                音テスト再生
+              </button>
+              <button
+                v-if="!soundEnabled"
+                class="timer__control-button"
+                class="timer-control-button"
+              >
+                音を有効化
+              </button>
+              <button
+                v-if="soundEnabled"
+                class="timer__control-button"
+                class="timer-control-button"
+              >
+                音を無効化
+              </button>
+            </div>
+          </div>
+  
+          <input type="text" readonly :value="message" class="message" />
+  
+          <div class="timer__how-to-use">
+            iOSで音を有効化する場合は一度「音テスト再生」を押してください
+          </div>
         </div>
-        <div>
-          <button
-            @click="restoreButton"
-            class="timer-control-button"
-            :disabled="!isCountingDownCompleted"
+        <div class="timer__copyright">
+          デザイン・効果音募集中<br />
+          <a href="https://github.com/ti-aiuto/online-debate-timer"
+            >https://github.com/ti-aiuto/online-debate-timer</a
           >
-            鳴動停止
-          </button>
-          <button @click="resetButton" class="timer-control-button">
-            リセット
-          </button>
-        </div>
-        <div>
-          <button
-            @click="addMinutesButton(1)"
-            class="timer-control-button"
-            :disabled="!canGoToSettingTime"
-          >
-            +分
-          </button>
-          <button
-            @click="addSecondsButton(10)"
-            class="timer-control-button"
-            :disabled="!canGoToSettingTime"
-          >
-            +10秒
-          </button>
-          <button
-            @click="addSecondsButton(1)"
-            class="timer-control-button"
-            :disabled="!canGoToSettingTime"
-          >
-            +秒
-          </button>
-        </div>
-        <div>
-          <button
-            @click="setSecButton(60)"
-            class="timer-control-button"
-            :disabled="!canGoToSettingTime"
-          >
-            1分
-          </button>
-          <button
-            @click="setSecButton(120)"
-            class="timer-control-button"
-            :disabled="!canGoToSettingTime"
-          >
-            2分
-          </button>
-          <button
-            @click="setSecButton(180)"
-            class="timer-control-button"
-            :disabled="!canGoToSettingTime"
-          >
-            3分
-          </button>
-          <button
-            @click="setSecButton(240)"
-            class="timer-control-button"
-            :disabled="!canGoToSettingTime"
-          >
-            4分
-          </button>
-          <button
-            @click="setSecButton(360)"
-            class="timer-control-button"
-            :disabled="!canGoToSettingTime"
-          >
-            6分
-          </button>
-        </div>
-        <div>
-          <button @click="testPlaySoundButton" class="timer-control-button">
-            音テスト再生
-          </button>
-          <button
-            v-if="!soundEnabled"
-            @click="enableSoundButton"
-            class="timer-control-button"
-          >
-            音を有効化
-          </button>
-          <button
-            v-if="soundEnabled"
-            @click="disableSoundButton"
-            class="timer-control-button"
-          >
-            音を無効化
-          </button>
         </div>
       </div>
-
-      <input type="text" readonly :value="message" class="message" />
-
-      <div class="how-to-use">
-        iOSで音を有効化する場合は一度「音テスト再生」を押してください
-      </div>
+  
     </div>
-    <div class="copyright">
-      デザイン・効果音募集中<br />
-      <a href="https://github.com/ti-aiuto/online-debate-timer"
-        >https://github.com/ti-aiuto/online-debate-timer</a
-      >
-    </div>
+
     <script type="text/javascript">
       // タイマーの状態遷移を整理したオブジェクト
       const TkTimerStateValue = Object.freeze({
