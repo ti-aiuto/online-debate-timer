@@ -75,12 +75,12 @@
         border-radius: 20px;
         font-family: monospace;
         touch-action: manipulation;
-        flex-grow: 1;
         border: none;
         border-top: solid 1px #eee;
         background-color: #fff;
         box-shadow: 0 1px 2px #777;
         color: #555;
+        flex: 1;
       }
 
       .timer__control-button:active {
@@ -224,7 +224,7 @@
                 @click="disableSoundButton"
                 class="timer__control-button"
               >
-                音をOFFにする
+                音をOFF
               </button>
 
               <button
@@ -232,7 +232,7 @@
                 @click="enableSoundButton"
                 class="timer__control-button"
               >
-                音をONにする&nbsp;
+                音をON
               </button>
             </div>
           </div>
