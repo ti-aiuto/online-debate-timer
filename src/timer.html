@@ -90,6 +90,10 @@
       .timer__control-button:disabled {
         color: #ccc;
       }
+      
+      .timer__control-button:disabled:active {
+        box-shadow: 0 1px 2px #777;
+      }
 
       .timer__how-to-use {
         font-size: 0.6rem;
@@ -215,6 +219,7 @@
               <button
                 @click="testPlaySoundButton"
                 class="timer__control-button"
+                :disabled="isCountingDown"
               >
                 テスト再生
               </button>
