@@ -4,20 +4,14 @@
 
 ## 実行
 
-好きなブラウザで `src/timer.html` を開けばOK
+好きなブラウザで `src/timer.html` を開く
 
 ## 開発
 
-IE11で動けばOK
+当分はIE11でも動くように作りたい
 
 ## 効果音
 
 https://jfxr.frozenfractal.com/#
 
-とSoundEngineで頑張ってつくった
-
-## ライセンス
-
-特に考えていないけど再配布などはしてもらっても
-
-Vue.jsのライセンスにあわせる？
+とSoundEngineで頑張ってつくったけどもっとそれっぽいのがあれば募集中
