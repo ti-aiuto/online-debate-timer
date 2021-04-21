@@ -146,6 +146,11 @@
             6分
           </button>
         </div>
+        <div>
+          <button @click="testPlaySoundButton" class="timer-control-button">
+            音テスト再生
+          </button>
+        </div>
       </div>
     </div>
     <div class="copyright">
@@ -400,6 +405,7 @@
           startTimeUpAudio: function () {
             try {
               this.timeUpAudio.currentTime = 0
+              this.timeUpAudio.loop = true;
               this.timeUpAudio.play()
             } catch (e) {}
           },
@@ -436,6 +442,13 @@
             this.stopTimeUpAudio()
             this.timer.setSec(sec)
           },
+          testPlaySoundButton: function() {
+            try {
+              this.timeUpAudio.currentTime = 7.2
+              this.timeUpAudio.loop = false;
+              this.timeUpAudio.play()
+            } catch (e) {}
+          }
         },
         mounted: function () {},
       })
