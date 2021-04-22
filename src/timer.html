@@ -399,14 +399,7 @@
       TkTimer.prototype.setTickCallback = function (callback) {
         this.tickCallback = callback
       }
-      TkTimer.prototype.clearTimer = function () {
-        clearInterval(this.timerId)
-        this.timerId = null
-        this.tickStartedAtMsec = null
-        this.lastTimeTickedSec = 0
-      }
       TkTimer.prototype.init = function () {
-        this.clearTimer()
         this.rememberedTargetSec = 0
         this.currentSec = 0
       }
