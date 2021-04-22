@@ -290,7 +290,7 @@
         if (!this.canGoToInitialState()) {
           return
         }
-        this.updateState(TkTimerStateValue.INITIAL_STATE);
+        this.updateState(TkTimerStateValue.INITIAL_STATE)
       }
       TkTimerState.prototype.isInitialState = function () {
         return this.state === TkTimerStateValue.INITIAL_STATE
@@ -306,7 +306,7 @@
         if (!this.canGoToSettingTime()) {
           return
         }
-        this.updateState(TkTimerStateValue.SETTING_TIME);
+        this.updateState(TkTimerStateValue.SETTING_TIME)
       }
       TkTimerState.prototype.isSettingTime = function () {
         return this.state === TkTimerStateValue.SETTING_TIME
@@ -318,7 +318,7 @@
         if (!this.canGoToCountingDown()) {
           return
         }
-        this.updateState(TkTimerStateValue.COUNTING_DOWN);
+        this.updateState(TkTimerStateValue.COUNTING_DOWN)
       }
       TkTimerState.prototype.isCountingDown = function () {
         return this.state === TkTimerStateValue.COUNTING_DOWN
@@ -330,7 +330,7 @@
         if (!this.canGoToPausingCountDown()) {
           return
         }
-        this.updateState(TkTimerStateValue.PAUSING_COUNTING_DOWN);
+        this.updateState(TkTimerStateValue.PAUSING_COUNTING_DOWN)
       }
       TkTimerState.prototype.isPausingCountDown = function () {
         return this.state === TkTimerStateValue.PAUSING_COUNTING_DOWN
@@ -342,7 +342,7 @@
         if (!this.canGoToCountingDownCompleted()) {
           return
         }
-        this.updateState(TkTimerStateValue.COUNTING_DOWN_COMPLETED);
+        this.updateState(TkTimerStateValue.COUNTING_DOWN_COMPLETED)
       }
       TkTimerState.prototype.isCountingDownCompleted = function () {
         return this.state === TkTimerStateValue.COUNTING_DOWN_COMPLETED
@@ -384,6 +384,31 @@
           this.notifyTick()
           this.lastTimeTickedSec = timeTickedSec
         }
+      }
+
+      const TimeUpAudio = function (src) {
+        this.audio = new Audio(src)
+        this.isPlaying = false
+        this.audio.load()
+      }
+      TimeUpAudio.prototype.play = function () {
+        if (!this.isPlaying) {
+          this.audio.currentTime = 0
+          this.audio.loop = true
+          this.audio.play()
+          this.isPlaying = true
+        }
+      }
+      TimeUpAudio.prototype.stop = function () {
+        if (this.isPlaying) {
+          this.audio.pause()
+          this.isPlaying = false
+        }
+      }
+      TimeUpAudio.prototype.testPlay = function () {
+        this.timeUpAudio.currentTime = 7.3
+        this.timeUpAudio.loop = false
+        this.timeUpAudio.play()
       }
 
       const TIMER_UPPER_LIMIT = 60 * 99 + 60 - 1
@@ -518,12 +543,10 @@
           const timer = new TkTimer()
           timer.setTickCallback(this.onTick)
           timer.state.setStateChangedCallback(this.onStateChanged)
-          const timeUpAudio = new Audio('timer-timeup.mp3')
-          timeUpAudio.load()
           return {
             currentSec: 0,
             timer: timer,
-            timeUpAudio: timeUpAudio,
+            timeUpAudio: new TimeUpAudio('timer-timeup.mp3'),
             soundEnabled: true,
           }
         },
@@ -532,25 +555,10 @@
             this.currentSec = sec
           },
           onStateChanged: function () {
-            this.stopTimeUpAudio()
+            this.timeUpAudio.stop()
             if (this.timer.state.isCountingDownCompleted()) {
-              this.startTimeUpAudio()
-            }
-          },
-          startTimeUpAudio: function () {
-            if (!this.soundEnabled) {
-              return
-            }
-            try {
-              this.timeUpAudio.currentTime = 0
-              this.timeUpAudio.loop = true
               this.timeUpAudio.play()
-            } catch (e) {}
-          },
-          stopTimeUpAudio: function () {
-            try {
-              this.timeUpAudio.pause()
-            } catch (e) {}
+            }
           },
           startButton: function () {
             this.timer.start()
@@ -574,11 +582,7 @@
             this.timer.setSec(sec)
           },
           testPlaySoundButton: function () {
-            try {
-              this.timeUpAudio.currentTime = 7.3
-              this.timeUpAudio.loop = false
-              this.timeUpAudio.play()
-            } catch (e) {}
+            this.timeUpAudio.testPlay()
           },
           enableSoundButton: function () {
             this.soundEnabled = true
