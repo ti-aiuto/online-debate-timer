@@ -1,5 +1,11 @@
 <template>
-  <div class="timer-time">{{ minutes }}:{{ seconds }}</div>
+  <div class="time-display">
+    <div class="time-display__digits">{{ minutes }}:{{ seconds }}</div>
+
+    <div class="time-display__sound-badge">
+      {{ soundEnabled ? '📢' : '🔇' }}
+    </div>
+  </div>
 </template>
 
 <script>
@@ -10,6 +16,10 @@ export default Vue.extend({
   props: {
     sec: {
       type: Number,
+      required: true,
+    },
+    soundEnabled: {
+      type: Boolean,
       required: true,
     },
   },
@@ -25,4 +35,24 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+.time-display {
+  background-color: #bbc8ba;
+  position: relative;
+
+  &__sound-badge {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 0.7rem;
+    padding: 5px;
+  }
+
+  &__digits {
+    padding: 8px 0;
+    font-size: 7rem;
+    line-height: 7rem;
+    text-align: center;
+    font-family: 'Inconsolata', monospace;
+  }
+}
 </style>

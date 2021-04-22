@@ -1,13 +1,11 @@
 <template>
   <div class="timer">
-    <div class="timer__time-display">
-      <time-display
-        :sec="currentSec"
-        class="timer__time-display-digits"
-      ></time-display>
+    <time-display
+      :sec="currentSec"
+      :sound-enabled="soundEnabled"
+      class="timer__time-display"
+    ></time-display>
 
-      <div class="timer__sound-badge">{{ soundEnabled ? '📢' : '🔇' }}</div>
-    </div>
     <div class="timer__controls">
       <div class="timer__controls-row">
         <button
@@ -246,24 +244,6 @@ export default class extends Vue {
   &__time-display {
     margin: 20px;
     margin-bottom: 16px;
-    background-color: #bbc8ba;
-    position: relative;
-  }
-
-  &__sound-badge {
-    position: absolute;
-    right: 0;
-    top: 0;
-    font-size: 0.7rem;
-    padding: 5px;
-  }
-
-  &__time-display-digits {
-    padding: 8px 0;
-    font-size: 7rem;
-    line-height: 7rem;
-    text-align: center;
-    font-family: 'Inconsolata', monospace;
   }
 
   &__controls {
