@@ -355,7 +355,7 @@
       TkClock.prototype.setTickCallback = function (callback) {
         this.tickCallback = callback
       }
-      TkClock.prototype.clear = function () {
+      TkClock.prototype.stop = function () {
         clearInterval(this.timerId)
         this.timerId = null
         this.tickStartedAtMsec = null
@@ -389,6 +389,11 @@
       // タイマーロジック
       const TkTimer = function () {
         this.state = new TkTimerState()
+        this.clock = new TkClock();
+        const that = this;
+        this.clock.setTickCallback(function() {
+          that.onSecTick();
+        });
         this.init()
       }
       TkTimer.prototype.setTickCallback = function (callback) {
@@ -439,21 +444,11 @@
           this.currentSec -= 1
           this.notifyCurrentSec()
           if (this.currentSec <= 0) {
-            this.clearTimer()
+            this.clock.stop()
             this.state.goToCountingDownCompleted()
           }
         } else {
           // いつかupも実装
-        }
-      }
-      TkTimer.prototype.onIntervalTick = function () {
-        // スタート時点の時刻と現在時刻を比較して正確な経過時間を計測する
-        const currentTime = Date.now()
-        const d = currentTime - this.tickStartedAtMsec
-        const timeTickedSec = Math.floor(d / 1000)
-        if (timeTickedSec !== this.lastTimeTickedSec) {
-          this.onSecTick()
-          this.lastTimeTickedSec = timeTickedSec
         }
       }
       TkTimer.prototype.start = function () {
@@ -466,11 +461,7 @@
             this.rememberedTargetSec = this.currentSec
           }
           this.state.goToCountingDown()
-          this.tickStartedAtMsec = Date.now()
-          const that = this
-          this.timerId = setInterval(function () {
-            that.onIntervalTick()
-          }, 50)
+          this.clock.start();
         } else {
           // いつかupも実装
         }
@@ -479,7 +470,7 @@
         if (!this.state.canGoToPausingCountDown()) {
           return
         }
-        this.clearTimer()
+        this.clock.stop()
         this.state.goToPausingCountDown()
       }
       TkTimer.prototype.restore = function () {
