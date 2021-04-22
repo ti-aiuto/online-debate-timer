@@ -20,6 +20,7 @@ export class TkClock {
   }
 
   start() {
+    this.lastTimeTickedSec = 0;
     this.tickStartedAtMsec = Date.now()
     this.timerId = setInterval(() => {
       this.onIntervalTick()
