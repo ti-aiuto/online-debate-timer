@@ -3,10 +3,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const path = require('path')
 
 module.exports = {
-  entry: './src/index.ts',
+  entry: './src/application.ts',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'index.js'
+    filename: 'application.js'
   },
   module: {
     rules: [

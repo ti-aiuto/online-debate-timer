@@ -9,6 +9,6 @@ export class TimeUpAudio extends TkAudio {
   testPlay() {
     this.setCurrentTime(7.3);
     this.setLoop(false);
-    this.play();
+    this.audio.play();
   }
 }
