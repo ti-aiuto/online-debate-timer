@@ -136,90 +136,105 @@
     </div>
   </div>
 </template>
-<script>
-import Vue from 'vue'
+
+<script lang="ts">
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import { TkTimer } from '@/lib/tk-timer'
 import TimeDisplay from './time-display.vue'
 import { TimeUpAudio } from './time-up-audio'
 
-export default Vue.extend({
-  components: { TimeDisplay },
-  props: {
-    timeUpAudioSrc: {
-      type: String,
-      required: true,
-    },
-  },
-  data() {
+@Component({ components: { TimeDisplay } })
+export default class extends Vue {
+  currentSec: number
+  timer: TkTimer
+  soundEnabled: boolean
+  timeUpAudio: TimeUpAudio
+
+  @Prop({ type: String, required: true })
+  timeUpAudioSrc!: string
+
+  constructor() {
+    super()
+    this.currentSec = 0
     const timer = new TkTimer()
     timer.setTickCallback(this.onTick)
     timer.state.setStateChangedCallback(this.onStateChanged)
-    return {
-      currentSec: 0,
-      timer: timer,
-      soundEnabled: true,
-      timeUpAudio: new TimeUpAudio(this.timeUpAudioSrc),
+    this.timer = timer
+    this.soundEnabled = true
+    this.timeUpAudio = new TimeUpAudio(this.timeUpAudioSrc)
+  }
+
+  get canGoToCountingDown() {
+    return this.timer.state.canGoToCountingDown()
+  }
+
+  get canGoToPausingCountDown() {
+    return this.timer.state.canGoToPausingCountDown()
+  }
+
+  get isCountingDown() {
+    return this.timer.state.isCountingDown()
+  }
+
+  get isCountingDownCompleted() {
+    return this.timer.state.isCountingDownCompleted()
+  }
+
+  get canGoToSettingTime() {
+    return this.timer.state.canGoToSettingTime()
+  }
+
+  onTick(sec: number) {
+    this.currentSec = sec
+  }
+
+  onStateChanged() {
+    this.timeUpAudio.stop()
+    if (this.timer.state.isCountingDownCompleted()) {
+      this.timeUpAudio.play()
     }
-  },
-  methods: {
-    onTick: function (sec) {
-      this.currentSec = sec
-    },
-    onStateChanged: function () {
-      this.timeUpAudio.stop()
-      if (this.timer.state.isCountingDownCompleted()) {
-        this.timeUpAudio.play()
-      }
-    },
-    startButton: function () {
-      this.timer.start()
-    },
-    pauseButton: function () {
-      this.timer.pause()
-    },
-    restoreButton: function () {
-      this.timer.restore()
-    },
-    resetButton: function () {
-      this.timer.reset()
-    },
-    addMinutesButton: function (min) {
-      this.timer.addSeconds(min * 60)
-    },
-    addSecondsButton: function (sec) {
-      this.timer.addSeconds(sec)
-    },
-    setSecButton: function (sec) {
-      this.timer.setSec(sec)
-    },
-    testPlaySoundButton: function () {
-      this.timeUpAudio.testPlay()
-    },
-    enableSoundButton: function () {
-      this.soundEnabled = true
-    },
-    disableSoundButton: function () {
-      this.soundEnabled = false
-    },
-  },
-  computed: {
-    canGoToCountingDown: function () {
-      return this.timer.state.canGoToCountingDown()
-    },
-    canGoToPausingCountDown: function () {
-      return this.timer.state.canGoToPausingCountDown()
-    },
-    isCountingDown: function () {
-      return this.timer.state.isCountingDown()
-    },
-    isCountingDownCompleted: function () {
-      return this.timer.state.isCountingDownCompleted()
-    },
-    canGoToSettingTime: function () {
-      return this.timer.state.canGoToSettingTime()
-    },
-  },
-})
+  }
+
+  startButton() {
+    this.timer.start()
+  }
+
+  pauseButton() {
+    this.timer.pause()
+  }
+
+  restoreButton() {
+    this.timer.restore()
+  }
+
+  resetButton() {
+    this.timer.reset()
+  }
+
+  addMinutesButton(min: number) {
+    this.timer.addSeconds(min * 60)
+  }
+
+  addSecondsButton(sec: number) {
+    this.timer.addSeconds(sec)
+  }
+
+  setSecButton(sec: number) {
+    this.timer.setSec(sec)
+  }
+
+  testPlaySoundButton() {
+    this.timeUpAudio.testPlay()
+  }
+
+  enableSoundButton() {
+    this.soundEnabled = true
+  }
+
+  disableSoundButton() {
+    this.soundEnabled = false
+  }
+}
 </script>
 
 <style scoped lang="scss">

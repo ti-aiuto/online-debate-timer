@@ -1,6 +1,6 @@
-import { TkClock } from "./tk-clock";
-import { TkTimerState } from "./tk-timer-state";
-import { isPositiveInteger } from "./tools";
+import { TkClock } from "@/lib/tk-clock";
+import { TkTimerState } from "@/lib/tk-timer-state";
+import { isPositiveInteger } from "@/lib/tools";
 
 type TickCallbackType = (src: number) => void;
 const TIMER_UPPER_LIMIT = 60 * 99 + 60 - 1
