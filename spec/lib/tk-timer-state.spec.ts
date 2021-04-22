@@ -55,7 +55,7 @@ describe('TkTimerState', () => {
   })
 
   describe('状態遷移問い合わせのテスト', () => {
-    it('戻り値の確認', () => {
+    it('戻り値＆stateの排他性の確認', () => {
       let state = buildInitialState()
       expect(state.state).toEqual('INITIAL_STATE')
       expect(state.isInitialState()).toBe(true)
@@ -120,6 +120,115 @@ describe('TkTimerState', () => {
       expect(state.canGoToCountingDown()).toBe(false)
       expect(state.canGoToPausingCountDown()).toBe(false)
       expect(state.canGoToCountingDownCompleted()).toBe(true)
+    })
+  })
+
+  describe('状態遷移のテスト', () => {
+    it('許可されている場合のみ遷移すること', () => {
+        // INITIAL_STATEからの遷移のチェック
+        let state = buildInitialState();
+        state.goToInitialState();
+        expect(state.isInitialState()).toBe(true);
+
+        state = buildInitialState();
+        state.goToSettingTime();
+        expect(state.isSettingTime()).toBe(true);
+
+        state = buildInitialState();
+        state.goToCountingDown();
+        expect(state.isCountingDown()).toBe(false);
+
+        state = buildInitialState();
+        state.goToPausingCountDown();
+        expect(state.isPausingCountDown()).toBe(false);
+
+        state = buildInitialState();
+        state.goToCountingDownCompleted();
+        expect(state.isCountingDownCompleted()).toBe(false);
+
+        // SETTING_TIMEからの遷移のチェック
+        state = buildSettingTime()
+        state.goToInitialState();
+        expect(state.isInitialState()).toBe(true);
+
+        state = buildSettingTime()
+        state.goToSettingTime();
+        expect(state.isSettingTime()).toBe(true);
+
+        state = buildSettingTime()
+        state.goToCountingDown();
+        expect(state.isCountingDown()).toBe(true);
+
+        state = buildSettingTime()
+        state.goToPausingCountDown();
+        expect(state.isSettingTime()).toBe(true);
+
+        state = buildSettingTime()
+        state.goToCountingDownCompleted();
+        expect(state.isSettingTime()).toBe(true);
+
+        // COUNTING_DOWNからの遷移のチェック
+        state = buildCountingDown()
+        state.goToInitialState();
+        expect(state.isInitialState()).toBe(true);
+
+        state = buildCountingDown()
+        state.goToSettingTime();
+        expect(state.isCountingDown()).toBe(true);
+
+        state = buildCountingDown()
+        state.goToCountingDown();
+        expect(state.isCountingDown()).toBe(true);
+
+        state = buildCountingDown()
+        state.goToPausingCountDown();
+        expect(state.isPausingCountDown()).toBe(true);
+
+        state = buildCountingDown()
+        state.goToCountingDownCompleted();
+        expect(state.isCountingDownCompleted()).toBe(true);
+
+        // PAUSING_COUNTING_DOWNからの遷移のチェック
+        state = buildPausingCountingDown()
+        state.goToInitialState();
+        expect(state.isInitialState()).toBe(true);
+
+        state = buildPausingCountingDown()
+        state.goToSettingTime();
+        expect(state.isPausingCountDown()).toBe(true);
+
+        state = buildPausingCountingDown()
+        state.goToCountingDown();
+        expect(state.isCountingDown()).toBe(true);
+
+        state = buildPausingCountingDown()
+        state.goToPausingCountDown();
+        expect(state.isPausingCountDown()).toBe(true);
+
+        state = buildPausingCountingDown()
+        state.goToCountingDownCompleted();
+        expect(state.isPausingCountDown()).toBe(true);
+
+        // COUNTING_DOWN_COMPLETEDからの遷移のチェック
+        state = buildCountingDownCompleted()
+        state.goToInitialState();
+        expect(state.isInitialState()).toBe(true);
+
+        state = buildCountingDownCompleted()
+        state.goToSettingTime();
+        expect(state.isSettingTime()).toBe(true);
+
+        state = buildCountingDownCompleted()
+        state.goToCountingDown();
+        expect(state.isCountingDownCompleted()).toBe(true);
+
+        state = buildCountingDownCompleted()
+        state.goToPausingCountDown();
+        expect(state.isCountingDownCompleted()).toBe(true);
+
+        state = buildCountingDownCompleted()
+        state.goToCountingDownCompleted();
+        expect(state.isCountingDownCompleted()).toBe(true);
     })
   })
 })
