@@ -271,6 +271,13 @@
       TkTimerState.prototype.setStateChangedCallback = function (callback) {
         this.stateChangedCallback = callback
       }
+      TkTimerState.prototype.updateState = function (nextState) {
+        const currentState = this.state
+        if (this.state !== nextState) {
+          this.state = nextState
+          this.notifyStateChanged()
+        }
+      }
       TkTimerState.prototype.notifyStateChanged = function () {
         if (this.stateChangedCallback) {
           this.stateChangedCallback(this.state)
@@ -283,8 +290,7 @@
         if (!this.canGoToInitialState()) {
           return
         }
-        this.state = TkTimerStateValue.INITIAL_STATE
-        this.notifyStateChanged()
+        this.updateState(TkTimerStateValue.INITIAL_STATE);
       }
       TkTimerState.prototype.isInitialState = function () {
         return this.state === TkTimerStateValue.INITIAL_STATE
@@ -300,8 +306,7 @@
         if (!this.canGoToSettingTime()) {
           return
         }
-        this.state = TkTimerStateValue.SETTING_TIME
-        this.notifyStateChanged()
+        this.updateState(TkTimerStateValue.SETTING_TIME);
       }
       TkTimerState.prototype.isSettingTime = function () {
         return this.state === TkTimerStateValue.SETTING_TIME
@@ -313,8 +318,7 @@
         if (!this.canGoToCountingDown()) {
           return
         }
-        this.state = TkTimerStateValue.COUNTING_DOWN
-        this.notifyStateChanged()
+        this.updateState(TkTimerStateValue.COUNTING_DOWN);
       }
       TkTimerState.prototype.isCountingDown = function () {
         return this.state === TkTimerStateValue.COUNTING_DOWN
@@ -326,8 +330,7 @@
         if (!this.canGoToPausingCountDown()) {
           return
         }
-        this.state = TkTimerStateValue.PAUSING_COUNTING_DOWN
-        this.notifyStateChanged()
+        this.updateState(TkTimerStateValue.PAUSING_COUNTING_DOWN);
       }
       TkTimerState.prototype.isPausingCountDown = function () {
         return this.state === TkTimerStateValue.PAUSING_COUNTING_DOWN
@@ -339,8 +342,7 @@
         if (!this.canGoToCountingDownCompleted()) {
           return
         }
-        this.state = TkTimerStateValue.COUNTING_DOWN_COMPLETED
-        this.notifyStateChanged()
+        this.updateState(TkTimerStateValue.COUNTING_DOWN_COMPLETED);
       }
       TkTimerState.prototype.isCountingDownCompleted = function () {
         return this.state === TkTimerStateValue.COUNTING_DOWN_COMPLETED
@@ -389,11 +391,11 @@
       // タイマーロジック
       const TkTimer = function () {
         this.state = new TkTimerState()
-        this.clock = new TkClock();
-        const that = this;
-        this.clock.setTickCallback(function() {
-          that.onSecTick();
-        });
+        this.clock = new TkClock()
+        const that = this
+        this.clock.setTickCallback(function () {
+          that.onSecTick()
+        })
         this.init()
       }
       TkTimer.prototype.setTickCallback = function (callback) {
@@ -454,7 +456,7 @@
             this.rememberedTargetSec = this.currentSec
           }
           this.state.goToCountingDown()
-          this.clock.start();
+          this.clock.start()
         } else {
           // いつかupも実装
         }
