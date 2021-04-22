@@ -16,6 +16,10 @@ describe('isPositiveInteger', () => {
     expect(isPositiveInteger('1-')).toBe(false) // 正常な値に不正な値がついている場合
     expect(isPositiveInteger('21-')).toBe(false)
     expect(isPositiveInteger('１')).toBe(false) // 全角
+
+    // 紛れ込んだ値のテスト
+    expect(isPositiveInteger((null as unknown) as number)).toBe(false)
+    expect(isPositiveInteger((undefined as unknown) as number)).toBe(false)
   })
 })
 
@@ -26,5 +30,7 @@ describe('zeroPadding', () => {
     expect(zeroPadding(99)).toEqual('99')
     expect(zeroPadding(987)).toEqual('87')
     expect(zeroPadding(-1)).toEqual('XX')
+    expect(zeroPadding((null as unknown) as number)).toEqual('XX')
+    expect(zeroPadding((undefined as unknown) as number)).toEqual('XX')
   })
 })
