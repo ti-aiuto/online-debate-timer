@@ -10,7 +10,6 @@ export class TkAudio {
   play() {
     if (!this.isPlaying) {
       this.audio.currentTime = 0
-      this.audio.loop = true
       this.audio.play()
       this.isPlaying = true
     }
