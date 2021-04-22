@@ -1,0 +1,19 @@
+{
+  "name": "online-debate-timer",
+  "version": "1.0.0",
+  "description": "オンラインディベートでの使用を想定した簡易タイマー",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ti-aiuto/online-debate-timer.git"
+  },
+  "author": "ti-aiueo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ti-aiuto/online-debate-timer/issues"
+  },
+  "homepage": "https://github.com/ti-aiuto/online-debate-timer#readme"
+}
