@@ -3,13 +3,13 @@ const TkTimerStateValue = Object.freeze({
   SETTING_TIME: 'SETTING_TIME',
   COUNTING_DOWN: 'COUNTING_DOWN',
   PAUSING_COUNTING_DOWN: 'PAUSING_COUNTING_DOWN',
-  COUNTING_DOWN_COMPLETED: 'COUNTING_DOWN_COMPLETED',
+  COUNTING_DOWN_COMPLETED: 'COUNTING_DOWN_COMPLETED'
 })
 
 type StateChangedCallbackType = () => void
 
 export class TkTimerState {
-  state: string;
+  state: string
   stateChangedCallback: StateChangedCallbackType | null = null
 
   constructor() {
@@ -21,18 +21,18 @@ export class TkTimerState {
   }
 
   canGoToInitialState(): boolean {
-    return true; // どこからでも許可
+    return true // どこからでも許可
   }
 
   goToInitialState() {
     if (!this.canGoToInitialState()) {
-      return;
+      return
     }
     this.updateState(TkTimerStateValue.INITIAL_STATE)
   }
 
   isInitialState(): boolean {
-    return this.state === TkTimerStateValue.INITIAL_STATE;
+    return this.state === TkTimerStateValue.INITIAL_STATE
   }
 
   canGoToSettingTime(): boolean {
@@ -55,7 +55,9 @@ export class TkTimerState {
   }
 
   canGoToCountingDown(): boolean {
-    return this.isSettingTime() || this.isPausingCountDown()
+    return (
+      this.isSettingTime() || this.isPausingCountDown() || this.isCountingDown()
+    )
   }
 
   goToCountingDown() {
@@ -70,7 +72,7 @@ export class TkTimerState {
   }
 
   canGoToPausingCountDown(): boolean {
-    return this.isCountingDown()
+    return this.isCountingDown() || this.isPausingCountDown()
   }
 
   goToPausingCountDown() {
@@ -85,7 +87,7 @@ export class TkTimerState {
   }
 
   canGoToCountingDownCompleted(): boolean {
-    return this.isCountingDown()
+    return this.isCountingDown() || this.isCountingDownCompleted()
   }
 
   goToCountingDownCompleted() {
@@ -111,4 +113,6 @@ export class TkTimerState {
       this.notifyStateChanged()
     }
   }
+
+  static readonly TkTimerStateValue = TkTimerStateValue
 }
