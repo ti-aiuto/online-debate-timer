@@ -1,10 +1,10 @@
 export class TkAudio {
-  audio: HTMLAudioElement;
-  isPlaying = false;
+  audio: HTMLAudioElement
+  isPlaying = false
 
   constructor(src: string) {
-    this.audio = new Audio(src);
-    this.audio.load();
+    this.audio = new Audio(src)
+    this.audio.load()
   }
 
   play() {
@@ -23,10 +23,18 @@ export class TkAudio {
   }
 
   setCurrentTime(time: number) {
-    this.audio.currentTime = time;
+    this.audio.currentTime = time
   }
 
   setLoop(loop: boolean) {
-    this.audio.loop = loop;
+    this.audio.loop = loop
+  }
+
+  mute() {
+    this.audio.volume = 0
+  }
+
+  unmute() {
+    this.audio.volume = 1
   }
 }

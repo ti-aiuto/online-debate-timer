@@ -87,7 +87,10 @@
         </control-button>
       </div>
       <div class="timer__controls-row">
-        <control-button @click="testPlaySoundButton" :disabled="isCountingDown">
+        <control-button
+          @click="testPlaySoundButton"
+          :disabled="isCountingDown || !soundEnabled"
+        >
           テスト再生
         </control-button>
 
@@ -205,10 +208,12 @@ export default class extends Vue {
 
   enableSoundButton() {
     this.soundEnabled = true
+    this.timeUpAudio.unmute()
   }
 
   disableSoundButton() {
     this.soundEnabled = false
+    this.timeUpAudio.mute()
   }
 }
 </script>
