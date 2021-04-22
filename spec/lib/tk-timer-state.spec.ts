@@ -44,6 +44,15 @@ describe('TkTimerState', () => {
         state.goToSettingTime()
         expect(callback).toHaveBeenCalledWith()
       })
+
+      it('同じ状態への遷移はコールバックが呼ばれないこと', () => {
+        const state = buildState()
+        const callback = jest.fn()
+        state.setStateChangedCallback(callback)
+
+        state.goToInitialState()
+        expect(callback).not.toHaveBeenCalledWith()
+      })
     })
 
     describe('コールバックがセットされていない場合', () => {
@@ -125,110 +134,172 @@ describe('TkTimerState', () => {
 
   describe('状態遷移のテスト', () => {
     it('許可されている場合のみ遷移すること', () => {
-        // INITIAL_STATEからの遷移のチェック
-        let state = buildInitialState();
-        state.goToInitialState();
-        expect(state.isInitialState()).toBe(true);
+      // INITIAL_STATEからの遷移のチェック
+      let state = buildInitialState()
+      state.goToInitialState()
+      expect(state.isInitialState()).toBe(true)
 
-        state = buildInitialState();
-        state.goToSettingTime();
-        expect(state.isSettingTime()).toBe(true);
+      state = buildInitialState()
+      state.goToSettingTime()
+      expect(state.isSettingTime()).toBe(true)
 
-        state = buildInitialState();
-        state.goToCountingDown();
-        expect(state.isCountingDown()).toBe(false);
+      state = buildInitialState()
+      state.goToCountingDown()
+      expect(state.isCountingDown()).toBe(false)
 
-        state = buildInitialState();
-        state.goToPausingCountDown();
-        expect(state.isPausingCountDown()).toBe(false);
+      state = buildInitialState()
+      state.goToPausingCountDown()
+      expect(state.isPausingCountDown()).toBe(false)
 
-        state = buildInitialState();
-        state.goToCountingDownCompleted();
-        expect(state.isCountingDownCompleted()).toBe(false);
+      state = buildInitialState()
+      state.goToCountingDownCompleted()
+      expect(state.isCountingDownCompleted()).toBe(false)
 
-        // SETTING_TIMEからの遷移のチェック
-        state = buildSettingTime()
-        state.goToInitialState();
-        expect(state.isInitialState()).toBe(true);
+      // SETTING_TIMEからの遷移のチェック
+      state = buildSettingTime()
+      state.goToInitialState()
+      expect(state.isInitialState()).toBe(true)
 
-        state = buildSettingTime()
-        state.goToSettingTime();
-        expect(state.isSettingTime()).toBe(true);
+      state = buildSettingTime()
+      state.goToSettingTime()
+      expect(state.isSettingTime()).toBe(true)
 
-        state = buildSettingTime()
-        state.goToCountingDown();
-        expect(state.isCountingDown()).toBe(true);
+      state = buildSettingTime()
+      state.goToCountingDown()
+      expect(state.isCountingDown()).toBe(true)
 
-        state = buildSettingTime()
-        state.goToPausingCountDown();
-        expect(state.isSettingTime()).toBe(true);
+      state = buildSettingTime()
+      state.goToPausingCountDown()
+      expect(state.isSettingTime()).toBe(true)
 
-        state = buildSettingTime()
-        state.goToCountingDownCompleted();
-        expect(state.isSettingTime()).toBe(true);
+      state = buildSettingTime()
+      state.goToCountingDownCompleted()
+      expect(state.isSettingTime()).toBe(true)
 
-        // COUNTING_DOWNからの遷移のチェック
-        state = buildCountingDown()
-        state.goToInitialState();
-        expect(state.isInitialState()).toBe(true);
+      // COUNTING_DOWNからの遷移のチェック
+      state = buildCountingDown()
+      state.goToInitialState()
+      expect(state.isInitialState()).toBe(true)
 
-        state = buildCountingDown()
-        state.goToSettingTime();
-        expect(state.isCountingDown()).toBe(true);
+      state = buildCountingDown()
+      state.goToSettingTime()
+      expect(state.isCountingDown()).toBe(true)
 
-        state = buildCountingDown()
-        state.goToCountingDown();
-        expect(state.isCountingDown()).toBe(true);
+      state = buildCountingDown()
+      state.goToCountingDown()
+      expect(state.isCountingDown()).toBe(true)
 
-        state = buildCountingDown()
-        state.goToPausingCountDown();
-        expect(state.isPausingCountDown()).toBe(true);
+      state = buildCountingDown()
+      state.goToPausingCountDown()
+      expect(state.isPausingCountDown()).toBe(true)
 
-        state = buildCountingDown()
-        state.goToCountingDownCompleted();
-        expect(state.isCountingDownCompleted()).toBe(true);
+      state = buildCountingDown()
+      state.goToCountingDownCompleted()
+      expect(state.isCountingDownCompleted()).toBe(true)
 
-        // PAUSING_COUNTING_DOWNからの遷移のチェック
-        state = buildPausingCountingDown()
-        state.goToInitialState();
-        expect(state.isInitialState()).toBe(true);
+      // PAUSING_COUNTING_DOWNからの遷移のチェック
+      state = buildPausingCountingDown()
+      state.goToInitialState()
+      expect(state.isInitialState()).toBe(true)
 
-        state = buildPausingCountingDown()
-        state.goToSettingTime();
-        expect(state.isPausingCountDown()).toBe(true);
+      state = buildPausingCountingDown()
+      state.goToSettingTime()
+      expect(state.isPausingCountDown()).toBe(true)
 
-        state = buildPausingCountingDown()
-        state.goToCountingDown();
-        expect(state.isCountingDown()).toBe(true);
+      state = buildPausingCountingDown()
+      state.goToCountingDown()
+      expect(state.isCountingDown()).toBe(true)
 
-        state = buildPausingCountingDown()
-        state.goToPausingCountDown();
-        expect(state.isPausingCountDown()).toBe(true);
+      state = buildPausingCountingDown()
+      state.goToPausingCountDown()
+      expect(state.isPausingCountDown()).toBe(true)
 
-        state = buildPausingCountingDown()
-        state.goToCountingDownCompleted();
-        expect(state.isPausingCountDown()).toBe(true);
+      state = buildPausingCountingDown()
+      state.goToCountingDownCompleted()
+      expect(state.isPausingCountDown()).toBe(true)
 
-        // COUNTING_DOWN_COMPLETEDからの遷移のチェック
-        state = buildCountingDownCompleted()
-        state.goToInitialState();
-        expect(state.isInitialState()).toBe(true);
+      // COUNTING_DOWN_COMPLETEDからの遷移のチェック
+      state = buildCountingDownCompleted()
+      state.goToInitialState()
+      expect(state.isInitialState()).toBe(true)
 
-        state = buildCountingDownCompleted()
-        state.goToSettingTime();
-        expect(state.isSettingTime()).toBe(true);
+      state = buildCountingDownCompleted()
+      state.goToSettingTime()
+      expect(state.isSettingTime()).toBe(true)
 
-        state = buildCountingDownCompleted()
-        state.goToCountingDown();
-        expect(state.isCountingDownCompleted()).toBe(true);
+      state = buildCountingDownCompleted()
+      state.goToCountingDown()
+      expect(state.isCountingDownCompleted()).toBe(true)
 
-        state = buildCountingDownCompleted()
-        state.goToPausingCountDown();
-        expect(state.isCountingDownCompleted()).toBe(true);
+      state = buildCountingDownCompleted()
+      state.goToPausingCountDown()
+      expect(state.isCountingDownCompleted()).toBe(true)
 
-        state = buildCountingDownCompleted()
-        state.goToCountingDownCompleted();
-        expect(state.isCountingDownCompleted()).toBe(true);
+      state = buildCountingDownCompleted()
+      state.goToCountingDownCompleted()
+      expect(state.isCountingDownCompleted()).toBe(true)
     })
+  })
+
+  it('ありがちなユースケースでの状態遷移とコールバックのテスト', () => {
+    const callback = jest.fn()
+    const state = buildState()
+    state.setStateChangedCallback(callback)
+
+    expect(state.isInitialState()).toBe(true)
+
+    // 時間入力開始
+    state.goToSettingTime()
+
+    expect(state.isSettingTime()).toBe(true)
+    expect(callback).toHaveBeenCalledTimes(1)
+
+    // 時間入力中
+    state.goToSettingTime()
+
+    expect(state.isSettingTime()).toBe(true)
+    expect(callback).toHaveBeenCalledTimes(1)
+
+    // タイマー作動開始
+    state.goToCountingDown()
+
+    expect(state.isCountingDown()).toBe(true)
+    expect(callback).toHaveBeenCalledTimes(2)
+
+    // タイマー一時停止
+    state.goToPausingCountDown()
+
+    expect(state.isPausingCountDown()).toBe(true)
+    expect(callback).toHaveBeenCalledTimes(3)
+
+    // タイマー再開
+    state.goToCountingDown()
+
+    expect(state.isCountingDown()).toBe(true)
+    expect(callback).toHaveBeenCalledTimes(4)
+
+    // カウント終了
+    state.goToCountingDownCompleted()
+
+    expect(state.isCountingDownCompleted()).toBe(true)
+    expect(callback).toHaveBeenCalledTimes(5)
+
+    // 直後に時間設定
+    state.goToSettingTime()
+
+    expect(state.isSettingTime()).toBe(true)
+    expect(callback).toHaveBeenCalledTimes(6)
+
+    // カウント開始
+    state.goToCountingDown()
+
+    expect(state.isCountingDown()).toBe(true)
+    expect(callback).toHaveBeenCalledTimes(7)
+
+    // リセット
+    state.goToInitialState()
+
+    expect(state.isInitialState()).toBe(true)
+    expect(callback).toHaveBeenCalledTimes(8)
   })
 })
