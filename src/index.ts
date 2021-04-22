@@ -1,2 +1,2 @@
-import Timer from "@/components/timer.vue";
+import Timer from "@/app/timer.vue";
 console.log(Timer);
