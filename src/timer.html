@@ -346,6 +346,44 @@
         return this.state === TkTimerStateValue.COUNTING_DOWN_COMPLETED
       }
 
+      // 経過時間を厳密に測るため時刻で比較するclock
+      const TkClock = function () {
+        this.timerId = null
+        this.tickStartedAtMsec = null
+        this.lastTimeTickedSec = 0
+      }
+      TkClock.prototype.setTickCallback = function (callback) {
+        this.tickCallback = callback
+      }
+      TkClock.prototype.clear = function () {
+        clearInterval(this.timerId)
+        this.timerId = null
+        this.tickStartedAtMsec = null
+        this.lastTimeTickedSec = 0
+      }
+      TkClock.prototype.start = function () {
+        this.tickStartedAtMsec = Date.now()
+        const that = this
+        this.timerId = setInterval(function () {
+          that.onIntervalTick()
+        }, 50)
+      }
+      TkClock.prototype.notifyTick = function () {
+        if (this.tickCallback) {
+          this.tickCallback()
+        }
+      }
+      TkClock.prototype.onIntervalTick = function () {
+        // スタート時点の時刻と現在時刻を比較して正確な経過時間を計測する
+        const currentTime = Date.now()
+        const d = currentTime - this.tickStartedAtMsec
+        const timeTickedSec = Math.floor(d / 1000)
+        if (timeTickedSec !== this.lastTimeTickedSec) {
+          this.notifyTick()
+          this.lastTimeTickedSec = timeTickedSec
+        }
+      }
+
       const TIMER_UPPER_LIMIT = 60 * 99 + 60 - 1
 
       // タイマーロジック
