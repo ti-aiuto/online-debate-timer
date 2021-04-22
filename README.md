@@ -12,6 +12,10 @@
 
 当分はIE11でも動くように作りたい
 
+### テスト
+
+* `npm run test`
+
 ### 効果音など募集中
 
 * 効果音は https://jfxr.frozenfractal.com/ とSoundEngineで頑張ってつくったけどもっとそれっぽいのがあれば募集中
