@@ -8,119 +8,96 @@
 
     <div class="timer__controls">
       <div class="timer__controls-row">
-        <button
+        <control-button
           v-if="!isCountingDown && !isCountingDownCompleted"
           @click="startButton"
-          class="timer__control-button"
           :disabled="!canGoToCountingDown"
         >
           スタート
-        </button>
-        <button
+        </control-button>
+        <control-button
           v-if="isCountingDown"
           @click="pauseButton"
-          class="timer__control-button"
           :disabled="!canGoToPausingCountDown"
         >
           一時停止
-        </button>
-        <button
+        </control-button>
+        <control-button
           v-if="isCountingDownCompleted"
           @click="restoreButton"
-          class="timer__control-button"
           :disabled="!isCountingDownCompleted"
         >
           鳴動停止
-        </button>
+        </control-button>
 
-        <button @click="resetButton" class="timer__control-button">
+        <control-button @click="resetButton" class="timer__control-button">
           リセット
-        </button>
+        </control-button>
       </div>
       <div class="timer__controls-row">
-        <button
+        <control-button
           @click="addMinutesButton(1)"
-          class="timer__control-button"
           :disabled="!canGoToSettingTime"
         >
           +分
-        </button>
-        <button
+        </control-button>
+        <control-button
           @click="addSecondsButton(10)"
-          class="timer__control-button"
           :disabled="!canGoToSettingTime"
         >
           +10秒
-        </button>
-        <button
+        </control-button>
+        <control-button
           @click="addSecondsButton(1)"
-          class="timer__control-button"
           :disabled="!canGoToSettingTime"
         >
           +秒
-        </button>
+        </control-button>
       </div>
       <div class="timer__controls-row">
-        <button
+        <control-button
           @click="setSecButton(60)"
-          class="timer__control-button"
           :disabled="!canGoToSettingTime"
         >
           1分
-        </button>
-        <button
+        </control-button>
+        <control-button
           @click="setSecButton(120)"
-          class="timer__control-button"
           :disabled="!canGoToSettingTime"
         >
           2分
-        </button>
-        <button
+        </control-button>
+        <control-button
           @click="setSecButton(180)"
-          class="timer__control-button"
           :disabled="!canGoToSettingTime"
         >
           3分
-        </button>
-        <button
+        </control-button>
+        <control-button
           @click="setSecButton(240)"
-          class="timer__control-button"
           :disabled="!canGoToSettingTime"
         >
           4分
-        </button>
-        <button
+        </control-button>
+        <control-button
           @click="setSecButton(360)"
-          class="timer__control-button"
           :disabled="!canGoToSettingTime"
         >
           6分
-        </button>
+        </control-button>
       </div>
       <div class="timer__controls-row">
-        <button
-          @click="testPlaySoundButton"
-          class="timer__control-button"
-          :disabled="isCountingDown"
-        >
+        <control-button @click="testPlaySoundButton" :disabled="isCountingDown">
           テスト再生
-        </button>
+        </control-button>
 
-        <button
-          v-if="soundEnabled"
-          @click="disableSoundButton"
-          class="timer__control-button"
-        >
+        <control-button v-if="soundEnabled" @click="disableSoundButton">
           音をOFF
-        </button>
+        </control-button>
 
-        <button
-          v-if="!soundEnabled"
-          @click="enableSoundButton"
-          class="timer__control-button"
-        >
+        <control-button v-if="!soundEnabled" @click="enableSoundButton">
           音をON
-        </button>
+        </control-button>
       </div>
     </div>
 
@@ -139,9 +116,10 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { TkTimer } from '@/lib/tk-timer'
 import TimeDisplay from './time-display.vue'
+import ControlButton from './control-button.vue'
 import { TimeUpAudio } from '@/lib/time-up-audio'
 
-@Component({ components: { TimeDisplay } })
+@Component({ components: { TimeDisplay, ControlButton } })
 export default class extends Vue {
   currentSec: number
   timer: TkTimer
@@ -253,33 +231,6 @@ export default class extends Vue {
   &__controls-row {
     display: flex;
     margin: 0 12px;
-  }
-
-  &__control-button {
-    font-size: 1.1rem;
-    margin: 6px;
-    padding: 12px 8px;
-    border-radius: 20px;
-    font-family: monospace;
-    touch-action: manipulation;
-    border: none;
-    border-top: solid 1px #eee;
-    background-color: #fff;
-    box-shadow: 0 1px 2px #777;
-    color: #555;
-    flex: 1;
-  }
-
-  &__control-button:active {
-    box-shadow: 0 0px 2px #777 inset;
-  }
-
-  &__control-button:disabled {
-    color: #ccc;
-  }
-
-  &__control-button:disabled:active {
-    box-shadow: 0 1px 2px #777;
   }
 
   &__how-to-use {
