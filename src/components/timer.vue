@@ -241,7 +241,6 @@ export default class extends Vue {
 .timer {
   box-shadow: 0 0 3px #bbb;
   border-radius: 24px;
-  margin: 12px;
   padding: 8px 0;
 
   &__time-display {
