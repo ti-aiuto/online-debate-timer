@@ -106,7 +106,6 @@ export class TkTimerState {
   }
 
   private updateState(nextState: string) {
-    const currentState = this.state
     if (this.state !== nextState) {
       this.state = nextState
       this.notifyStateChanged()
