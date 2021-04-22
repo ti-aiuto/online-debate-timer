@@ -15,7 +15,6 @@ export class TkTimer {
   constructor() {
     this.state = new TkTimerState()
     this.clock = new TkClock()
-    const that = this
     this.clock.setTickCallback( () => {
       this.onTick()
     })
