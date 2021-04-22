@@ -32,15 +32,11 @@ export default Vue.extend({
   flex: 1;
 }
 
-.control-button:active {
+.control-button:active:not(:disabled) {
   box-shadow: 0 0px 2px #777 inset;
 }
 
 .control-button:disabled {
   color: #ccc;
-}
-
-.control-button:disabled:active {
-  box-shadow: 0 1px 2px #777;
 }
 </style>
