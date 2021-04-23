@@ -124,9 +124,9 @@ import { TimeUpAudio } from '@/app/time-up-audio'
 
 @Component({ components: { TimeDisplay, ControlButton } })
 export default class extends Vue {
-  currentSec: number
+  currentSec: number = 0
+  soundEnabled: boolean = true
   timer: TkTimer
-  soundEnabled: boolean
   timeUpAudio: TimeUpAudio
 
   @Prop({ type: String, required: true })
@@ -134,12 +134,10 @@ export default class extends Vue {
 
   constructor() {
     super()
-    this.currentSec = 0
     const timer = new TkTimer()
     timer.setTickCallback(this.onTick)
     timer.setStateChangedCallback(this.onStateChanged)
     this.timer = timer
-    this.soundEnabled = true
     this.timeUpAudio = new TimeUpAudio(this.timeUpAudioSrc)
   }
 
