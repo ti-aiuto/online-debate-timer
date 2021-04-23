@@ -31,13 +31,8 @@ describe('TkTimer', () => {
         timer.setSec(0)
         expect(callback).not.toHaveBeenCalled()
 
-        expect(timer.isInitialState()).toBe(true)
-        expect(timer.isSettingTime()).toBe(false)
-
         timer.setSec(1)
         expect(callback).toHaveBeenCalledWith(1)
-
-        expect(timer.isSettingTime()).toBe(true)
 
         timer.setSec(180)
         expect(callback).toHaveBeenCalledWith(180)
