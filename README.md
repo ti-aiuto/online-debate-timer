@@ -5,7 +5,7 @@
 ## 実行
 
 1. `npm run build`
-1. `public/timer.html` を開く
+1. `public/index.html` を開く
 
 ## 開発
 

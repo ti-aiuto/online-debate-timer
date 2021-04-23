@@ -53,7 +53,7 @@ module.exports = {
       filename: 'application-[chunkhash].css'
     }),
     new HtmlWebpackPlugin({
-      template: './src/app/timer.html'
+      template: './src/app/index.html'
     }),
     new CopyFilePlugin({
       patterns: [
