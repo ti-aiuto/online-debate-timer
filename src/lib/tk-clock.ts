@@ -4,10 +4,10 @@ const SYSTEM_INTERVAL = 50
 
 // 経過時間を厳密に測るため時刻で比較するclock
 export class TkClock {
-  private timerId: number | null = null
-  private tickStartedAtMsec: number = 0
-  private lastTimeTickedSec: number = 0
-  private tickCallback: TickCallbackType | null = null
+  protected timerId: number | null = null
+  protected tickStartedAtMsec: number = 0
+  protected lastTimeTickedSec: number = 0
+  protected tickCallback: TickCallbackType | null = null
 
   setTickCallback(callback: TickCallbackType) {
     this.tickCallback = callback

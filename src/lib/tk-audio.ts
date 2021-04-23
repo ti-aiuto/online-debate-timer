@@ -1,7 +1,7 @@
 export class TkAudio {
-  audio: HTMLAudioElement
   isPlaying = false
-  private volumeBefore: number = 1
+  protected audio: HTMLAudioElement
+  protected volumeBefore: number = 1
 
   constructor(src: string) {
     this.audio = new Audio(src)

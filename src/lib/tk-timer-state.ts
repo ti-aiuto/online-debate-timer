@@ -10,7 +10,7 @@ type StateChangedCallbackType = () => void
 
 export class TkTimerState {
   state: string
-  stateChangedCallback: StateChangedCallbackType | null = null
+  protected stateChangedCallback: StateChangedCallbackType | null = null
 
   constructor() {
     this.state = TkTimerStateValue.INITIAL_STATE

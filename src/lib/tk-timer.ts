@@ -8,9 +8,9 @@ const TIMER_UPPER_LIMIT = 60 * 99 + 60 - 1
 export class TkTimer {
   state: TkTimerState
   clock: TkClock
-  tickCallback: TickCallbackType | null = null
-  rememberedTargetSec: number = 0
-  currentSec: number = 0
+  protected tickCallback: TickCallbackType | null = null
+  protected rememberedTargetSec: number = 0
+  protected currentSec: number = 0
 
   constructor() {
     this.state = new TkTimerState()
