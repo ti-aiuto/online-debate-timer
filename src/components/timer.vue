@@ -89,7 +89,7 @@
       <div class="timer__controls-row">
         <control-button
           @click="testPlaySoundButton"
-          :disabled="isCountingDown || !soundEnabled"
+          :disabled="isCountingDown || !soundEnabled || isCountingDownCompleted"
         >
           テスト再生
         </control-button>
