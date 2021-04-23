@@ -1,12 +1,15 @@
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyFilePlugin = require('copy-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
   entry: './src/app/application.ts',
   output: {
-    path: path.resolve(__dirname, 'public/build'),
-    filename: 'application.js'
+    path: path.resolve(__dirname, 'public'),
+    filename: 'application-[chunkhash].js'
   },
   module: {
     rules: [
@@ -47,8 +50,21 @@ module.exports = {
   plugins: [
     new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
-      filename: 'style.css'
-    })
+      filename: 'application-[chunkhash].css'
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/app/timer.html'
+    }),
+    new CopyFilePlugin({
+      patterns: [
+        {
+          context: 'src/app',
+          from: '**/*.mp3',
+          to: path.resolve(__dirname, 'public')
+        }
+      ]
+    }),
+    new CleanWebpackPlugin()
   ],
   resolve: {
     alias: {
