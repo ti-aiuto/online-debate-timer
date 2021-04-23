@@ -22,12 +22,14 @@ export class TkTimer {
     this.init()
   }
 
-  setTickCallback(callback: TickCallbackType) {
+  setTickCallback(callback: TickCallbackType): TkTimer {
     this.tickCallback = callback
+    return this
   }
 
-  setStateChangedCallback(callback: StateChangedCallbackType) {
+  setStateChangedCallback(callback: StateChangedCallbackType): TkTimer {
     this.state.setStateChangedCallback(callback)
+    return this
   }
 
   setSec(srcArg: number | string) {
