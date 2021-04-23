@@ -101,4 +101,23 @@ describe('TkClock', () => {
     // 二回目に返却したタイマーIDのタイマーが停止すること
     expect(clearIntervalSpy).toHaveBeenCalledWith(dummyTimerId2)
   })
+
+  it('コールバックがなくてもエラーにならないこと', () => {
+    const clock = new TkClock()
+    
+    const setIntervalSpy = jest.spyOn(window, 'setInterval')
+
+    const dateSpy = jest.spyOn(Date, 'now')
+    let currentTime = 1619177100000
+    dateSpy.mockReturnValue(currentTime)
+
+    clock.start() // タイマースタート
+
+    // 渡されたコールバックを受け取る
+    let intervalCallback = setIntervalSpy.mock.calls[0][0] as Function
+
+    currentTime += 1000
+    dateSpy.mockReturnValue(currentTime)
+    expect(() => intervalCallback()).not.toThrowError()
+  })
 })
