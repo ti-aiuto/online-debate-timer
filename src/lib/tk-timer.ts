@@ -25,17 +25,6 @@ export class TkTimer {
     this.tickCallback = callback
   }
 
-  init() {
-    this.rememberedTargetSec = 0
-    this.updateSec(0)
-  }
-
-  notifyCurrentSec() {
-    if (this.tickCallback) {
-      this.tickCallback(this.currentSec)
-    }
-  }
-
   setSec(srcArg: number | string) {
     if (!this.state.canGoToSettingTime()) {
       return
@@ -59,18 +48,6 @@ export class TkTimer {
       return
     }
     this.setSec(this.currentSec + sec)
-  }
-
-  onTick(timePassed: number) {
-    if (this.state.isCountingDown()) {
-      this.updateSec(Math.max(this.currentSec - timePassed, 0))
-      if (this.currentSec === 0) {
-        this.clock.stop()
-        this.state.goToCountingDownCompleted()
-      }
-    } else {
-      // いつかupも実装
-    }
   }
 
   start() {
@@ -108,6 +85,29 @@ export class TkTimer {
       this.init()
       this.notifyCurrentSec()
       this.state.goToInitialState()
+    }
+  }
+
+  private init() {
+    this.rememberedTargetSec = 0
+    this.updateSec(0)
+  }
+
+  private notifyCurrentSec() {
+    if (this.tickCallback) {
+      this.tickCallback(this.currentSec)
+    }
+  }
+
+  private onTick(timePassed: number) {
+    if (this.state.isCountingDown()) {
+      this.updateSec(Math.max(this.currentSec - timePassed, 0))
+      if (this.currentSec === 0) {
+        this.clock.stop()
+        this.state.goToCountingDownCompleted()
+      }
+    } else {
+      // いつかupも実装
     }
   }
 
