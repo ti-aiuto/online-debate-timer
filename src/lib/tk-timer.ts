@@ -80,7 +80,7 @@ export class TkTimer {
       }
       if (this.state.isSettingTime()) {
         // 新規にカウントダウンをスタートする場合だけ設定時間を覚えておく
-        this.rememberedTargetSec = this.currentSec
+        this.rememberTargetSec()
       }
       this.state.goToCountingDown()
       this.clock.start()
@@ -99,8 +99,7 @@ export class TkTimer {
 
   restore() {
     if (this.state.canGoToSettingTime()) {
-      this.setSec(this.rememberedTargetSec)
-      // 遷移は中でやってくれる
+      this.restoreTargetSec()
     }
   }
 
@@ -115,5 +114,14 @@ export class TkTimer {
   private updateSec(sec: number) {
     this.currentSec = sec
     this.notifyCurrentSec()
+  }
+
+  private rememberTargetSec() {
+    this.rememberedTargetSec = this.currentSec
+  }
+
+  private restoreTargetSec() {
+    // 遷移は中でやってくれる
+    this.setSec(this.rememberedTargetSec)
   }
 }
