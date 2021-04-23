@@ -99,5 +99,62 @@ describe('TkAudio', () => {
         expect(audioMockObject.pause).toHaveBeenCalledTimes(1)
       })
     })
+
+    describe('setCurrentTime', () => {
+      it('値が更新されること', () => {
+        const audio = new TkAudio(dummyFilename)
+        audioMockObject.currentTime = 123
+
+        audio.setCurrentTime(456)
+        expect(audioMockObject.currentTime).toEqual(456)
+
+        audio.setCurrentTime(789)
+        expect(audioMockObject.currentTime).toEqual(789)
+      })
+    })
+
+    describe('setLoop', () => {
+      it('値が更新されること', () => {
+        const audio = new TkAudio(dummyFilename)
+        audioMockObject.loop = false
+
+        audio.setLoop(true)
+        expect(audioMockObject.loop).toBe(true)
+
+        audio.setLoop(false)
+        expect(audioMockObject.loop).toBe(false)
+      })
+    })
+
+    describe('mute', () => {
+      it('値が更新されること', () => {
+        const audio = new TkAudio(dummyFilename)
+        audioMockObject.volume = 0.5
+
+        audio.mute()
+        expect(audioMockObject.volume).toEqual(0)
+
+        audio.mute()
+        expect(audioMockObject.volume).toEqual(0)
+      })
+    })
+
+    describe('unmute', () => {
+      it('値が更新されること', () => {
+        const audio = new TkAudio(dummyFilename)
+        audioMockObject.volume = 0.5
+
+        // いきなりunmuteを実行した場合
+        audio.unmute()
+        expect(audioMockObject.volume).toEqual(1)
+
+        // 一度音量を設定してからmuteにした場合
+        audioMockObject.volume = 0.3
+        audio.mute()
+
+        audio.unmute()
+        expect(audioMockObject.volume).toEqual(0.3)
+      })
+    })
   })
 })
