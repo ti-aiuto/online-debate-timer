@@ -4,7 +4,7 @@ describe('TkClock', () => {
   it('一通りのユースケースのテスト', () => {
     const clock = new TkClock()
     const clockCallback = jest.fn()
-    clock.setTickCallback(clockCallback)
+    expect(clock.setTickCallback(clockCallback)).toBe(clock)
 
     const setIntervalSpy = jest.spyOn(window, 'setInterval')
     const clearIntervalSpy = jest.spyOn(window, 'clearInterval')
@@ -104,7 +104,7 @@ describe('TkClock', () => {
 
   it('コールバックがなくてもエラーにならないこと', () => {
     const clock = new TkClock()
-    
+
     const setIntervalSpy = jest.spyOn(window, 'setInterval')
 
     const dateSpy = jest.spyOn(Date, 'now')

@@ -9,8 +9,9 @@ export class TkClock {
   protected lastTimeTickedSec: number = 0
   protected tickCallback: TickCallbackType | null = null
 
-  setTickCallback(callback: TickCallbackType) {
+  setTickCallback(callback: TickCallbackType): TkClock {
     this.tickCallback = callback
+    return this
   }
 
   private notifyTick(timePassed: number) {

@@ -16,8 +16,9 @@ export class TkTimerState {
     this.state = TkTimerStateValue.INITIAL_STATE
   }
 
-  setStateChangedCallback(callback: StateChangedCallbackType) {
+  setStateChangedCallback(callback: StateChangedCallbackType): TkTimerState {
     this.stateChangedCallback = callback
+    return this
   }
 
   canGoToInitialState(): boolean {

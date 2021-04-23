@@ -39,7 +39,7 @@ describe('TkTimerState', () => {
       it('呼び出されること', () => {
         const state = buildState()
         const callback = jest.fn()
-        state.setStateChangedCallback(callback)
+        expect(state.setStateChangedCallback(callback)).toBe(state)
 
         state.goToSettingTime()
         expect(callback).toHaveBeenCalledWith()
