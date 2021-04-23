@@ -1,33 +1,33 @@
-import { TkClock } from "@/lib/tk-clock";
-import { TkTimerState } from "@/lib/tk-timer-state";
-import { isPositiveInteger } from "@/lib/tools";
+import { TkClock } from '@/lib/tk-clock'
+import { TkTimerState } from '@/lib/tk-timer-state'
+import { isPositiveInteger } from '@/lib/tools'
 
-type TickCallbackType = (src: number) => void;
+type TickCallbackType = (src: number) => void
 const TIMER_UPPER_LIMIT = 60 * 99 + 60 - 1
 
 export class TkTimer {
-  state: TkTimerState;
-  clock: TkClock;
-  tickCallback: TickCallbackType | null = null;
-  rememberedTargetSec: number = 0;
-  currentSec: number = 0;
+  state: TkTimerState
+  clock: TkClock
+  tickCallback: TickCallbackType | null = null
+  rememberedTargetSec: number = 0
+  currentSec: number = 0
 
   constructor() {
     this.state = new TkTimerState()
     this.clock = new TkClock()
-    this.clock.setTickCallback( () => {
+    this.clock.setTickCallback(() => {
       this.onTick()
     })
     this.init()
   }
 
   setTickCallback(callback: TickCallbackType) {
-    this.tickCallback = callback;
+    this.tickCallback = callback
   }
 
   init() {
     this.rememberedTargetSec = 0
-    this.currentSec = 0
+    this.updateSec(0)
   }
 
   notifyCurrentSec() {
@@ -50,8 +50,7 @@ export class TkTimer {
     if (sec > TIMER_UPPER_LIMIT) {
       sec = TIMER_UPPER_LIMIT
     }
-    this.currentSec = sec
-    this.notifyCurrentSec()
+    this.updateSec(sec)
     this.state.goToSettingTime()
   }
 
@@ -64,8 +63,7 @@ export class TkTimer {
 
   onTick() {
     if (this.state.isCountingDown()) {
-      this.currentSec -= 1
-      this.notifyCurrentSec()
+      this.updateSec(this.currentSec - 1)
       if (this.currentSec <= 0) {
         this.clock.stop()
         this.state.goToCountingDownCompleted()
@@ -112,5 +110,10 @@ export class TkTimer {
       this.notifyCurrentSec()
       this.state.goToInitialState()
     }
+  }
+
+  private updateSec(sec: number) {
+    this.currentSec = sec
+    this.notifyCurrentSec()
   }
 }
