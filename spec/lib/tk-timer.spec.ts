@@ -62,17 +62,35 @@ describe('TkTimer', () => {
         timer.setCurrentSecUpdatedCallback(callback)
         timer.setSec(1)
 
-        callback.mockClear()
-
         timer.addSeconds(1)
         expect(callback).toHaveBeenCalledWith(2)
 
         timer.addSeconds(2)
         expect(callback).toHaveBeenCalledWith(4)
 
-        timer.setSec(99 * 59 + 59)
+        timer.setSec(99 * 60 + 59)
         timer.addSeconds(1)
-        expect(callback).toHaveBeenCalledWith(99 * 59 + 59) // 上限値まで
+        expect(callback).toHaveBeenCalledWith(99 * 60 + 59) // 上限値まで
+      })
+    })
+
+    describe('setSecUpperLimit', () => {
+      it('上限が変わること', () => {
+        const timer = new TkTimer()
+        const callback = jest.fn()
+        timer.setCurrentSecUpdatedCallback(callback)
+
+        timer.setSec(99 * 60 + 99)
+        expect(callback).toHaveBeenCalledWith(99 * 60 + 59) // 上限値まで
+
+        // 上限変更
+        timer.setSecUpperLimit(99 * 60 + 99)
+
+        timer.setSec(99 * 60 + 99)
+        expect(callback).toHaveBeenCalledWith(99 * 60 + 99) // 新しい上限値
+
+        timer.setSec(99 * 60 + 99 + 1)
+        expect(callback).toHaveBeenCalledWith(99 * 60 + 99) // 新しい上限値
       })
     })
   })

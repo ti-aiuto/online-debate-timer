@@ -11,7 +11,7 @@ export class TkTimer {
   protected currentSecUpdatedCallback: CurrentSecUpdatedCallbackType | null = null
   protected rememberedTargetSec: number = 0
   protected currentSec: number = 0
-  protected timerUpperLimit = 60 * 99 + 60 - 1
+  protected secUpperLimit = 60 * 99 + 60 - 1
 
   constructor() {
     this.state = new TkTimerState()
@@ -40,14 +40,14 @@ export class TkTimer {
         return
       }
       let sec = parseInt(`${srcArg}`)
-      sec = Math.min(sec, this.timerUpperLimit)
+      sec = Math.min(sec, this.secUpperLimit)
       this.updateSec(sec)
       this.state.goToSettingTime()
     }
   }
 
-  setTimerUpperLimit(limit: number) {
-    this.timerUpperLimit = limit
+  setSecUpperLimit(limit: number) {
+    this.secUpperLimit = limit
   }
 
   addSeconds(sec: number) {
