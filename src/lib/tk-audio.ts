@@ -1,6 +1,7 @@
 export class TkAudio {
   audio: HTMLAudioElement
   isPlaying = false
+  private volumeBefore: number = 1
 
   constructor(src: string) {
     this.audio = new Audio(src)
@@ -31,10 +32,11 @@ export class TkAudio {
   }
 
   mute() {
+    this.volumeBefore = this.audio.volume
     this.audio.volume = 0
   }
 
   unmute() {
-    this.audio.volume = 1
+    this.audio.volume = this.volumeBefore
   }
 }
