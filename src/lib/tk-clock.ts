@@ -1,4 +1,4 @@
-type TickCallbackType = () => void
+type TickCallbackType = (timePassed: number) => void
 
 const SYSTEM_INTERVAL = 50
 
@@ -13,9 +13,9 @@ export class TkClock {
     this.tickCallback = callback
   }
 
-  private notifyTick() {
+  private notifyTick(timePassed: number) {
     if (this.tickCallback) {
-      this.tickCallback()
+      this.tickCallback(timePassed)
     }
   }
 
@@ -41,7 +41,7 @@ export class TkClock {
     const d = this.getCurrentTimeMsec() - this.tickStartedAtMsec
     const timeTickedSec = Math.floor(d / 1000)
     if (timeTickedSec !== this.lastTimeTickedSec) {
-      this.notifyTick()
+      this.notifyTick(timeTickedSec)
       this.lastTimeTickedSec = timeTickedSec
     }
   }

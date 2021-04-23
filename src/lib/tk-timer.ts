@@ -15,8 +15,8 @@ export class TkTimer {
   constructor() {
     this.state = new TkTimerState()
     this.clock = new TkClock()
-    this.clock.setTickCallback(() => {
-      this.onTick()
+    this.clock.setTickCallback(timePassed => {
+      this.onTick(timePassed)
     })
     this.init()
   }
@@ -61,9 +61,9 @@ export class TkTimer {
     this.setSec(this.currentSec + sec)
   }
 
-  onTick() {
+  onTick(timePassed: number) {
     if (this.state.isCountingDown()) {
-      this.updateSec(this.currentSec - 1)
+      this.updateSec(this.currentSec - timePassed)
       if (this.currentSec <= 0) {
         this.clock.stop()
         this.state.goToCountingDownCompleted()
