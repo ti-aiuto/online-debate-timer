@@ -120,7 +120,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import { TkTimer } from '@/lib/tk-timer'
 import TimeDisplay from './time-display.vue'
 import ControlButton from './control-button.vue'
-import { TimeUpAudio } from '@/lib/time-up-audio'
+import { TimeUpAudio } from '@/app/time-up-audio'
 
 @Component({ components: { TimeDisplay, ControlButton } })
 export default class extends Vue {
