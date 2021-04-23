@@ -56,7 +56,6 @@ export class TkTimer {
       }
       this.state.goToCountingDown()
       this.clock.start()
-    } else {
       // いつかupも実装
     }
   }
@@ -141,7 +140,6 @@ export class TkTimer {
         this.clock.stop()
         this.state.goToCountingDownCompleted()
       }
-    } else {
       // いつかupも実装
     }
   }
