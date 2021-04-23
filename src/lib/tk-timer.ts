@@ -3,11 +3,12 @@ import { TkTimerState } from '@/lib/tk-timer-state'
 import { isPositiveInteger } from '@/lib/tools'
 
 type TickCallbackType = (sec: number) => void
+type StateChangedCallbackType = () => void
 const TIMER_UPPER_LIMIT = 60 * 99 + 60 - 1
 
 export class TkTimer {
-  state: TkTimerState
-  clock: TkClock
+  protected state: TkTimerState
+  protected clock: TkClock
   protected tickCallback: TickCallbackType | null = null
   protected rememberedTargetSec: number = 0
   protected currentSec: number = 0
@@ -23,6 +24,10 @@ export class TkTimer {
 
   setTickCallback(callback: TickCallbackType) {
     this.tickCallback = callback
+  }
+
+  setStateChangedCallback(callback: StateChangedCallbackType) {
+    this.state.setStateChangedCallback(callback)
   }
 
   setSec(srcArg: number | string) {
@@ -86,6 +91,46 @@ export class TkTimer {
       this.notifyCurrentSec()
       this.state.goToInitialState()
     }
+  }
+
+  canGoToInitialState() {
+    return this.state.canGoToInitialState()
+  }
+
+  isInitialState() {
+    return this.state.isInitialState()
+  }
+
+  canGoToSettingTime() {
+    return this.state.canGoToSettingTime()
+  }
+
+  isSettingTime() {
+    return this.state.isSettingTime()
+  }
+
+  canGoToCountingDown() {
+    return this.state.canGoToCountingDown()
+  }
+
+  isCountingDown() {
+    return this.state.isCountingDown()
+  }
+
+  canGoToPausingCountDown() {
+    return this.state.canGoToPausingCountDown()
+  }
+
+  isPausingCountDown() {
+    return this.state.isPausingCountDown()
+  }
+
+  canGoToCountingDownCompleted() {
+    return this.state.canGoToCountingDownCompleted()
+  }
+
+  isCountingDownCompleted() {
+    return this.state.isCountingDownCompleted()
   }
 
   private init() {

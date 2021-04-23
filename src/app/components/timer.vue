@@ -137,30 +137,30 @@ export default class extends Vue {
     this.currentSec = 0
     const timer = new TkTimer()
     timer.setTickCallback(this.onTick)
-    timer.state.setStateChangedCallback(this.onStateChanged)
+    timer.setStateChangedCallback(this.onStateChanged)
     this.timer = timer
     this.soundEnabled = true
     this.timeUpAudio = new TimeUpAudio(this.timeUpAudioSrc)
   }
 
   get canGoToCountingDown() {
-    return this.timer.state.canGoToCountingDown()
+    return this.timer.canGoToCountingDown()
   }
 
   get canGoToPausingCountDown() {
-    return this.timer.state.canGoToPausingCountDown()
+    return this.timer.canGoToPausingCountDown()
   }
 
   get isCountingDown() {
-    return this.timer.state.isCountingDown()
+    return this.timer.isCountingDown()
   }
 
   get isCountingDownCompleted() {
-    return this.timer.state.isCountingDownCompleted()
+    return this.timer.isCountingDownCompleted()
   }
 
   get canGoToSettingTime() {
-    return this.timer.state.canGoToSettingTime()
+    return this.timer.canGoToSettingTime()
   }
 
   onTick(sec: number) {
@@ -169,7 +169,7 @@ export default class extends Vue {
 
   onStateChanged() {
     this.timeUpAudio.stop()
-    if (this.timer.state.isCountingDownCompleted()) {
+    if (this.timer.isCountingDownCompleted()) {
       this.timeUpAudio.play()
     }
   }
