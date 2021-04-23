@@ -2,7 +2,7 @@ import { TkClock } from '@/lib/tk-clock'
 import { TkTimerState } from '@/lib/tk-timer-state'
 import { isPositiveInteger } from '@/lib/tools'
 
-type TickCallbackType = (src: number) => void
+type TickCallbackType = (sec: number) => void
 const TIMER_UPPER_LIMIT = 60 * 99 + 60 - 1
 
 export class TkTimer {
