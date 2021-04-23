@@ -31,17 +31,17 @@ describe('TkTimer', () => {
         timer.setSec(0)
         expect(callback).not.toHaveBeenCalled()
 
-        expect(timer.isInitialState()).toBe(true);
-        expect(timer.isSettingTime()).toBe(false);
+        expect(timer.isInitialState()).toBe(true)
+        expect(timer.isSettingTime()).toBe(false)
 
         timer.setSec(1)
         expect(callback).toHaveBeenCalledWith(1)
 
-        expect(timer.isSettingTime()).toBe(true);
+        expect(timer.isSettingTime()).toBe(true)
 
         timer.setSec(180)
         expect(callback).toHaveBeenCalledWith(180)
-        
+
         timer.setSec(99 * 60 + 59)
         expect(callback).toHaveBeenCalledWith(99 * 60 + 59)
 
@@ -52,6 +52,27 @@ describe('TkTimer', () => {
       it('コールバックがなくてもエラーにならないこと', () => {
         const timer = new TkTimer()
         expect(() => timer.setSec(1)).not.toThrowError()
+      })
+    })
+
+    describe('addSeconds', () => {
+      it('秒数が加算されていくこと', () => {
+        const timer = new TkTimer()
+        const callback = jest.fn()
+        timer.setCurrentSecUpdatedCallback(callback)
+        timer.setSec(1)
+
+        callback.mockClear()
+
+        timer.addSeconds(1)
+        expect(callback).toHaveBeenCalledWith(2)
+
+        timer.addSeconds(2)
+        expect(callback).toHaveBeenCalledWith(4)
+
+        timer.setSec(99 * 59 + 59)
+        timer.addSeconds(1)
+        expect(callback).toHaveBeenCalledWith(99 * 59 + 59) // 上限値まで
       })
     })
   })
