@@ -35,9 +35,11 @@ export class TkTimer {
   }
 
   setSec(srcArg: number | string) {
-    if (this.state.canGoToSettingTime() && isPositiveInteger(srcArg)) {
+    if (this.state.canGoToSettingTime()) {
+      if (!isPositiveInteger(srcArg)) {
+        return
+      }
       let sec = parseInt(`${srcArg}`)
-      sec = Math.max(sec, 0)
       sec = Math.min(sec, TIMER_UPPER_LIMIT)
       this.updateSec(sec)
       this.state.goToSettingTime()
