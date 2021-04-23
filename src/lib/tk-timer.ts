@@ -32,27 +32,16 @@ export class TkTimer {
   }
 
   setSec(srcArg: number | string) {
-    if (!this.state.canGoToSettingTime()) {
-      return
+    if (this.state.canGoToSettingTime() && isPositiveInteger(srcArg)) {
+      let sec = parseInt(`${srcArg}`)
+      sec = Math.max(sec, 0)
+      sec = Math.min(sec, TIMER_UPPER_LIMIT)
+      this.updateSec(sec)
+      this.state.goToSettingTime()
     }
-    if (!isPositiveInteger(srcArg)) {
-      return
-    }
-    let sec = parseInt(`${srcArg}`)
-    if (sec < 0) {
-      return
-    }
-    if (sec > TIMER_UPPER_LIMIT) {
-      sec = TIMER_UPPER_LIMIT
-    }
-    this.updateSec(sec)
-    this.state.goToSettingTime()
   }
 
   addSeconds(sec: number) {
-    if (!this.state.canGoToSettingTime()) {
-      return
-    }
     this.setSec(this.currentSec + sec)
   }
 
@@ -73,11 +62,10 @@ export class TkTimer {
   }
 
   pause() {
-    if (!this.state.canGoToPausingCountDown()) {
-      return
+    if (this.state.canGoToPausingCountDown()) {
+      this.clock.stop()
+      this.state.goToPausingCountDown()
     }
-    this.clock.stop()
-    this.state.goToPausingCountDown()
   }
 
   restore() {
