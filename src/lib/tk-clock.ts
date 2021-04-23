@@ -39,10 +39,11 @@ export class TkClock {
   private onIntervalTick() {
     // スタート時点の時刻と現在時刻を比較して正確な経過時間を計測する
     const d = this.getCurrentTimeMsec() - this.tickStartedAtMsec
-    const timeTickedSec = Math.floor(d / 1000)
-    if (timeTickedSec !== this.lastTimeTickedSec) {
-      this.notifyTick(timeTickedSec)
-      this.lastTimeTickedSec = timeTickedSec
+    const timePassedSinceStart = Math.floor(d / 1000)
+    if (timePassedSinceStart !== this.lastTimeTickedSec) {
+      const timePassed = timePassedSinceStart - this.lastTimeTickedSec
+      this.notifyTick(timePassed)
+      this.lastTimeTickedSec = timePassedSinceStart
     }
   }
 

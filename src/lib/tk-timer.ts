@@ -63,8 +63,8 @@ export class TkTimer {
 
   onTick(timePassed: number) {
     if (this.state.isCountingDown()) {
-      this.updateSec(this.currentSec - timePassed)
-      if (this.currentSec <= 0) {
+      this.updateSec(Math.max(this.currentSec - timePassed, 0))
+      if (this.currentSec === 0) {
         this.clock.stop()
         this.state.goToCountingDownCompleted()
       }
