@@ -16,9 +16,7 @@ export class TkTimer {
   constructor() {
     this.state = new TkTimerState()
     this.clock = new TkClock()
-    this.clock.setTickCallback(timePassed => {
-      this.onTick(timePassed)
-    })
+    this.clock.setTickCallback(timePassed => this.onTick(timePassed))
     this.init()
   }
 
@@ -90,8 +88,6 @@ export class TkTimer {
   reset() {
     if (this.state.canGoToInitialState()) {
       this.init()
-      this.notifyCurrentSec()
-      this.state.goToInitialState()
     }
   }
 
@@ -138,6 +134,7 @@ export class TkTimer {
   private init() {
     this.rememberedTargetSec = 0
     this.updateSec(0)
+    this.state.goToInitialState()
   }
 
   private notifyCurrentSec() {

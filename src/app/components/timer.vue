@@ -135,8 +135,8 @@ export default class extends Vue {
   constructor() {
     super()
     this.timer = new TkTimer()
-      .setTickCallback(this.onTick)
-      .setStateChangedCallback(this.onStateChanged)
+      .setTickCallback(() => this.onTick)
+      .setStateChangedCallback(() => this.onStateChanged)
     this.timeUpAudio = new TimeUpAudio(this.timeUpAudioSrc)
   }
 
