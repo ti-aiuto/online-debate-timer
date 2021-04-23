@@ -2,14 +2,14 @@ import { TkClock } from '@/lib/tk-clock'
 import { TkTimerState } from '@/lib/tk-timer-state'
 import { isPositiveInteger } from '@/lib/tools'
 
-type TickCallbackType = (sec: number) => void
+type CurrentSecUpdatedCallbackType = (sec: number) => void
 type StateChangedCallbackType = () => void
 const TIMER_UPPER_LIMIT = 60 * 99 + 60 - 1
 
 export class TkTimer {
   protected state: TkTimerState
   protected clock: TkClock
-  protected tickCallback: TickCallbackType | null = null
+  protected currentSecUpdatedCallback: CurrentSecUpdatedCallbackType | null = null
   protected rememberedTargetSec: number = 0
   protected currentSec: number = 0
 
@@ -21,8 +21,11 @@ export class TkTimer {
     this.init()
   }
 
-  setTickCallback(callback: TickCallbackType): TkTimer {
-    this.tickCallback = callback
+  setCurrentSecUpdatedCallback(
+    callback: CurrentSecUpdatedCallbackType
+  ): TkTimer {
+    this.currentSecUpdatedCallback = callback
+    this.notifyCurrentSec() // 今の秒数をすぐに連携しておく
     return this
   }
 
@@ -128,8 +131,8 @@ export class TkTimer {
   }
 
   private notifyCurrentSec() {
-    if (this.tickCallback) {
-      this.tickCallback(this.currentSec)
+    if (this.currentSecUpdatedCallback) {
+      this.currentSecUpdatedCallback(this.currentSec)
     }
   }
 
