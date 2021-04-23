@@ -92,6 +92,8 @@ export class TkTimer {
     }
   }
 
+  // 以下はUI側で状態を使って制御するための実装
+
   canGoToInitialState() {
     return this.state.canGoToInitialState()
   }
