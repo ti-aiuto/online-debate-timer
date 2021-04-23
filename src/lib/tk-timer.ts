@@ -47,7 +47,7 @@ export class TkTimer {
 
   start() {
     if (this.state.canGoToCountingDown()) {
-      if (this.currentSec === 0) {
+      if (this.isCurrentSecZero()) {
         return
       }
       if (this.state.isSettingTime()) {
@@ -136,7 +136,7 @@ export class TkTimer {
   private onTick(timePassed: number) {
     if (this.state.isCountingDown()) {
       this.updateSec(Math.max(this.currentSec - timePassed, 0))
-      if (this.currentSec === 0) {
+      if (this.isCurrentSecZero()) {
         this.clock.stop()
         this.state.goToCountingDownCompleted()
       }
@@ -156,5 +156,9 @@ export class TkTimer {
   private restoreTargetSec() {
     // 遷移は中でやってくれる
     this.setSec(this.rememberedTargetSec)
+  }
+
+  private isCurrentSecZero() {
+    return this.currentSec === 0
   }
 }
