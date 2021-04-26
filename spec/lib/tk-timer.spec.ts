@@ -1,5 +1,6 @@
 import { TkClock } from '@/lib/tk-clock'
 import { TkTimer } from '@/lib/tk-timer'
+import { testDelegation } from './utils'
 
 jest.mock('@/lib/tk-clock')
 
@@ -99,7 +100,21 @@ describe('TkTimer', () => {
         expect(callback).toHaveBeenCalledWith(99 * 60 + 59) // 上限値まで
       })
     })
-  })
+
+    it('状態取得用メソッドたち', () => {
+      const timer = new TkTimer();
+      testDelegation(timer, 'canGoToInitialState', 'state');
+      testDelegation(timer, 'isInitialState', 'state');
+      testDelegation(timer, 'canGoToSettingTime', 'state');
+      testDelegation(timer, 'isSettingTime', 'state');
+      testDelegation(timer, 'canGoToCountingDown', 'state');
+      testDelegation(timer, 'isCountingDown', 'state');
+      testDelegation(timer, 'canGoToPausingCountDown', 'state');
+      testDelegation(timer, 'isPausingCountDown', 'state');
+      testDelegation(timer, 'canGoToCountingDownCompleted', 'state');
+      testDelegation(timer, 'isCountingDownCompleted', 'state');
+    });
+})
 
   it('一通りの操作のテスト', () => {
     const timer = new TkTimer()
