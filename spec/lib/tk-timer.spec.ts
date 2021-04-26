@@ -101,7 +101,7 @@ describe('TkTimer', () => {
       })
     })
 
-    it('状態取得用メソッドたち', () => {
+    it('状態取得メソッドの委譲テスト', () => {
       const timer = new TkTimer();
       testDelegation(timer, 'canGoToInitialState', 'state');
       testDelegation(timer, 'isInitialState', 'state');
