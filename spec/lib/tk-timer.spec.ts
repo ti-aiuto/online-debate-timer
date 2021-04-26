@@ -102,19 +102,19 @@ describe('TkTimer', () => {
     })
 
     it('状態取得メソッドの委譲テスト', () => {
-      const timer = new TkTimer();
-      testDelegation(timer, 'canGoToInitialState', 'state');
-      testDelegation(timer, 'isInitialState', 'state');
-      testDelegation(timer, 'canGoToSettingTime', 'state');
-      testDelegation(timer, 'isSettingTime', 'state');
-      testDelegation(timer, 'canGoToCountingDown', 'state');
-      testDelegation(timer, 'isCountingDown', 'state');
-      testDelegation(timer, 'canGoToPausingCountDown', 'state');
-      testDelegation(timer, 'isPausingCountDown', 'state');
-      testDelegation(timer, 'canGoToCountingDownCompleted', 'state');
-      testDelegation(timer, 'isCountingDownCompleted', 'state');
-    });
-})
+      const timer = new TkTimer()
+      testDelegation(timer, 'canGoToInitialState', 'state')
+      testDelegation(timer, 'isInitialState', 'state')
+      testDelegation(timer, 'canGoToSettingTime', 'state')
+      testDelegation(timer, 'isSettingTime', 'state')
+      testDelegation(timer, 'canGoToCountingDown', 'state')
+      testDelegation(timer, 'isCountingDown', 'state')
+      testDelegation(timer, 'canGoToPausingCountDown', 'state')
+      testDelegation(timer, 'isPausingCountDown', 'state')
+      testDelegation(timer, 'canGoToCountingDownCompleted', 'state')
+      testDelegation(timer, 'isCountingDownCompleted', 'state')
+    })
+  })
 
   it('一通りの操作のテスト', () => {
     const timer = new TkTimer()
@@ -137,6 +137,7 @@ describe('TkTimer', () => {
     // カウント開始
     timer.start()
     expect(timer.isCountingDown()).toBe(true)
+    expect(tkClockMock.start).toHaveBeenCalledTimes(1)
 
     // 秒数経過を再現
     onTickCallback(1)
@@ -145,10 +146,12 @@ describe('TkTimer', () => {
     // 一時停止
     timer.pause()
     expect(timer.isPausingCountDown()).toBe(true)
+    expect(tkClockMock.stop).toHaveBeenCalledTimes(1)
 
     // 再開
     timer.start()
     expect(timer.isCountingDown()).toBe(true)
+    expect(tkClockMock.start).toHaveBeenCalledTimes(2)
 
     onTickCallback(1)
     expect(tickCallback).toHaveBeenLastCalledWith(1)
@@ -158,6 +161,7 @@ describe('TkTimer', () => {
 
     // カウント完了
     expect(timer.isCountingDownCompleted()).toBe(true)
+    expect(tkClockMock.stop).toHaveBeenCalledTimes(2)
 
     // 鳴動停止
     timer.restore()
