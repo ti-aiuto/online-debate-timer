@@ -1,6 +1,17 @@
+import { TkClock } from '@/lib/tk-clock'
 import { TkTimer } from '@/lib/tk-timer'
 
+jest.mock('@/lib/tk-clock')
+
 describe('TkTimer', () => {
+  let TkClockMock: any // jestが生やしたメソッドを呼ぶためこれ経由で操作
+
+  beforeEach(() => {
+    TkClockMock = TkClock
+    TkClockMock.mockClear()
+    TkClockMock.prototype.setTickCallback.mockReturnThis()
+  })
+
   describe('instance methods', () => {
     describe('setTickCallback', () => {
       it('現在の秒数をすぐに通知すること', () => {
@@ -69,7 +80,7 @@ describe('TkTimer', () => {
         expect(callback).toHaveBeenCalledWith(99 * 60 + 99) // 新しい上限値
       })
     })
-    
+
     describe('addSeconds', () => {
       it('秒数が加算されていくこと', () => {
         const timer = new TkTimer()
@@ -90,5 +101,58 @@ describe('TkTimer', () => {
     })
   })
 
-  // TODO: まだテスト書きかけ
+  it('一通りの操作のテスト', () => {
+    const timer = new TkTimer()
+    const tkClockMock = TkClockMock.mock.instances[0]
+    const onTickCallback = tkClockMock.setTickCallback.mock.calls[0][0]
+
+    const tickCallback = jest.fn()
+    timer.setCurrentSecUpdatedCallback(tickCallback)
+
+    const stateCallback = jest.fn()
+    timer.setStateChangedCallback(stateCallback)
+
+    expect(timer.isInitialState()).toBe(true)
+
+    // 時間の設定
+    timer.setSec(3)
+    expect(timer.isSettingTime()).toBe(true)
+    expect(tickCallback).toHaveBeenLastCalledWith(3)
+
+    // カウント開始
+    timer.start()
+    expect(timer.isCountingDown()).toBe(true)
+
+    // 秒数経過を再現
+    onTickCallback(1)
+    expect(tickCallback).toHaveBeenLastCalledWith(2)
+
+    // 一時停止
+    timer.pause()
+    expect(timer.isPausingCountDown()).toBe(true)
+
+    // 再開
+    timer.start()
+    expect(timer.isCountingDown()).toBe(true)
+
+    onTickCallback(1)
+    expect(tickCallback).toHaveBeenLastCalledWith(1)
+
+    onTickCallback(1)
+    expect(tickCallback).toHaveBeenLastCalledWith(0)
+
+    // カウント完了
+    expect(timer.isCountingDownCompleted()).toBe(true)
+
+    // 鳴動停止
+    timer.restore()
+
+    expect(timer.isSettingTime()).toBe(true)
+    expect(tickCallback).toHaveBeenLastCalledWith(3)
+
+    // リセット
+    timer.reset()
+    expect(timer.isInitialState()).toBe(true)
+    expect(tickCallback).toHaveBeenLastCalledWith(0)
+  })
 })
