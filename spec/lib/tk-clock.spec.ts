@@ -37,7 +37,7 @@ describe('TkClock', () => {
     currentTime += 1
     dateSpy.mockReturnValue(currentTime)
     intervalCallback()
-    expect(clockCallback).toHaveBeenCalledWith(1)
+    expect(clockCallback).toHaveBeenLastCalledWith(1)
     expect(clockCallback).toHaveBeenCalledTimes(1)
 
     // 1000ミリ秒経過後から50ミリ秒経過は呼ばれない
@@ -50,7 +50,7 @@ describe('TkClock', () => {
     currentTime += 1000 - 50 + 999
     dateSpy.mockReturnValue(currentTime)
     intervalCallback()
-    expect(clockCallback).toHaveBeenCalledWith(1)
+    expect(clockCallback).toHaveBeenLastCalledWith(1)
     expect(clockCallback).toHaveBeenCalledTimes(2)
 
     // 2000ミリ秒以上の場合の扱い
@@ -58,7 +58,7 @@ describe('TkClock', () => {
     currentTime += 1 + 1000
     dateSpy.mockReturnValue(currentTime)
     intervalCallback()
-    expect(clockCallback).toHaveBeenCalledWith(2)
+    expect(clockCallback).toHaveBeenLastCalledWith(2)
     expect(clockCallback).toHaveBeenCalledTimes(3)
 
     clockCallback.mockReset()
@@ -67,7 +67,7 @@ describe('TkClock', () => {
     clock.stop()
 
     // システムのタイマー解除の呼び出しチェック
-    expect(clearIntervalSpy).toHaveBeenCalledWith(dummyTimerId1)
+    expect(clearIntervalSpy).toHaveBeenLastCalledWith(dummyTimerId1)
 
     const dummyTimerId2 = 456
     setIntervalSpy.mockReturnValue(dummyTimerId2)
@@ -93,13 +93,13 @@ describe('TkClock', () => {
     dateSpy.mockReturnValue(currentTime)
     intervalCallback()
     expect(clockCallback).toHaveBeenCalledTimes(1)
-    expect(clockCallback).toHaveBeenCalledWith(1)
+    expect(clockCallback).toHaveBeenLastCalledWith(1)
 
     // 二度目のタイマー停止
     clock.stop()
 
     // 二回目に返却したタイマーIDのタイマーが停止すること
-    expect(clearIntervalSpy).toHaveBeenCalledWith(dummyTimerId2)
+    expect(clearIntervalSpy).toHaveBeenLastCalledWith(dummyTimerId2)
   })
 
   it('コールバックがなくてもエラーにならないこと', () => {
