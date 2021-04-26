@@ -133,11 +133,13 @@ describe('TkTimer', () => {
     timer.setSec(3)
     expect(timer.isSettingTime()).toBe(true)
     expect(tickCallback).toHaveBeenLastCalledWith(3)
+    expect(stateCallback).toHaveBeenCalledTimes(1)
 
     // カウント開始
     timer.start()
     expect(timer.isCountingDown()).toBe(true)
     expect(tkClockMock.start).toHaveBeenCalledTimes(1)
+    expect(stateCallback).toHaveBeenCalledTimes(2)
 
     // 秒数経過を再現
     onTickCallback(1)
@@ -147,11 +149,13 @@ describe('TkTimer', () => {
     timer.pause()
     expect(timer.isPausingCountDown()).toBe(true)
     expect(tkClockMock.stop).toHaveBeenCalledTimes(1)
+    expect(stateCallback).toHaveBeenCalledTimes(3)
 
     // 再開
     timer.start()
     expect(timer.isCountingDown()).toBe(true)
     expect(tkClockMock.start).toHaveBeenCalledTimes(2)
+    expect(stateCallback).toHaveBeenCalledTimes(4)
 
     onTickCallback(1)
     expect(tickCallback).toHaveBeenLastCalledWith(1)
@@ -162,16 +166,19 @@ describe('TkTimer', () => {
     // カウント完了
     expect(timer.isCountingDownCompleted()).toBe(true)
     expect(tkClockMock.stop).toHaveBeenCalledTimes(2)
+    expect(stateCallback).toHaveBeenCalledTimes(5)
 
     // 鳴動停止
     timer.restore()
 
     expect(timer.isSettingTime()).toBe(true)
     expect(tickCallback).toHaveBeenLastCalledWith(3)
+    expect(stateCallback).toHaveBeenCalledTimes(6)
 
     // リセット
     timer.reset()
     expect(timer.isInitialState()).toBe(true)
     expect(tickCallback).toHaveBeenLastCalledWith(0)
+    expect(stateCallback).toHaveBeenCalledTimes(7)
   })
 })
