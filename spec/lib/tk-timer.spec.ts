@@ -1,6 +1,6 @@
 import { TkClock } from '@/lib/tk-clock'
 import { TkTimer } from '@/lib/tk-timer'
-import { testDelegation } from './utils'
+import { testDelegation } from '../utils'
 
 jest.mock('@/lib/tk-clock')
 
