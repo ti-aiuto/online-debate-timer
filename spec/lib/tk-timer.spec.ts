@@ -50,25 +50,6 @@ describe('TkTimer', () => {
       })
     })
 
-    describe('addSeconds', () => {
-      it('秒数が加算されていくこと', () => {
-        const timer = new TkTimer()
-        const callback = jest.fn()
-        timer.setCurrentSecUpdatedCallback(callback)
-        timer.setSec(1)
-
-        timer.addSeconds(1)
-        expect(callback).toHaveBeenCalledWith(2)
-
-        timer.addSeconds(2)
-        expect(callback).toHaveBeenCalledWith(4)
-
-        timer.setSec(99 * 60 + 59)
-        timer.addSeconds(1)
-        expect(callback).toHaveBeenCalledWith(99 * 60 + 59) // 上限値まで
-      })
-    })
-
     describe('setSecUpperLimit', () => {
       it('上限が変わること', () => {
         const timer = new TkTimer()
@@ -86,6 +67,25 @@ describe('TkTimer', () => {
 
         timer.setSec(99 * 60 + 99 + 1)
         expect(callback).toHaveBeenCalledWith(99 * 60 + 99) // 新しい上限値
+      })
+    })
+    
+    describe('addSeconds', () => {
+      it('秒数が加算されていくこと', () => {
+        const timer = new TkTimer()
+        const callback = jest.fn()
+        timer.setCurrentSecUpdatedCallback(callback)
+        timer.setSec(1)
+
+        timer.addSeconds(1)
+        expect(callback).toHaveBeenCalledWith(2)
+
+        timer.addSeconds(2)
+        expect(callback).toHaveBeenCalledWith(4)
+
+        timer.setSec(99 * 60 + 59)
+        timer.addSeconds(1)
+        expect(callback).toHaveBeenCalledWith(99 * 60 + 59) // 上限値まで
       })
     })
   })
