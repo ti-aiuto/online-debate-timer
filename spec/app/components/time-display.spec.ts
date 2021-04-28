@@ -55,5 +55,24 @@ describe('TimeDisplay', () => {
         expect(wrapper.vm.minutes).toBe('99')
       })
     })
+
+    describe('seconds', () => {
+      it('値の確認', () => {
+        let wrapper = factory({ sec: 0 })
+        expect(wrapper.vm.seconds).toBe('00')
+
+        wrapper = factory({ sec: 1 })
+        expect(wrapper.vm.seconds).toBe('01')
+
+        wrapper = factory({ sec: 59 })
+        expect(wrapper.vm.seconds).toBe('59')
+
+        wrapper = factory({ sec: 60 })
+        expect(wrapper.vm.seconds).toBe('00')
+
+        wrapper = factory({ sec: 61 })
+        expect(wrapper.vm.seconds).toBe('01')
+      })
+    })
   })
 })
