@@ -1,5 +1,7 @@
 # online-debate-timer
 
+[![Node CI](https://github.com/ti-aiuto/online-debate-timer/actions/workflows/nodejs.yml/badge.svg)](https://github.com/ti-aiuto/online-debate-timer/actions/workflows/nodejs.yml)
+
 オンラインディベート向けの簡易タイマー
 
 <img src="https://user-images.githubusercontent.com/13868411/116104104-26002080-a6eb-11eb-9424-318ef7e809a6.png" width="350">
