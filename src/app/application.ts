@@ -6,6 +6,9 @@ import Timer from '@/app/components/timer.vue'
 document.addEventListener('DOMContentLoaded', () => {
   new Vue({
     el: '#timer-ui',
-    components: { Timer }
+    components: { Timer },
+    data(): { scale: number } {
+      return { scale: 1 }
+    },
   })
 })

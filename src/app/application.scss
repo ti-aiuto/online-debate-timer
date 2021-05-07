@@ -5,6 +5,7 @@
 
 body {
   font-family: sans-serif;
+  user-select: none;
 }
 
 .container {
@@ -14,4 +15,29 @@ body {
 
 .timer-wrapper {
   margin: 12px;
+  transform-origin: top;
+}
+
+.zoom-buttons {
+  margin: 8px;
+  text-align: center;
+
+  button {
+    font-size: 0.7rem;
+    margin: 6px;
+    padding: 8px 8px;
+    border-radius: 12px;
+    font-family: monospace;
+    touch-action: manipulation;
+    border: none;
+    border-top: solid 1px #eee;
+    background-color: #fff;
+    box-shadow: 0 1px 2px #777;
+    color: #555;
+    flex: 1;
+  }
+
+  button:active:not(:disabled) {
+    box-shadow: 0 0px 2px #777 inset;
+  }
 }

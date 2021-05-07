@@ -15,7 +15,16 @@
   </head>
   <body>
     <div class="container" id="timer-ui">
-      <timer time-up-audio-src="timer-timeup.mp3" class="timer-wrapper"></timer>
+      <div class="zoom-buttons">
+        <button @click="scale += 0.1">拡大</button>
+        <button @click="scale -= 0.1">縮小</button>
+        <button @click="scale = 1">リセット</button>
+      </div>
+      <timer
+        time-up-audio-src="timer-timeup.mp3"
+        class="timer-wrapper"
+        :style="{transform: 'scale(' + scale + ')'}"
+      ></timer>
     </div>
   </body>
 </html>
