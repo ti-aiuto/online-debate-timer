@@ -19,7 +19,7 @@
   "homepage": "https://github.com/ti-aiuto/online-debate-timer#readme",
   "devDependencies": {
     "@types/jest": "^26.0.22",
-    "@vue/test-utils": "^1.1.4",
+    "@vue/test-utils": "^1.2.0",
     "babel-core": "^6.26.3",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
     "copy-webpack-plugin": "^8.1.1",
