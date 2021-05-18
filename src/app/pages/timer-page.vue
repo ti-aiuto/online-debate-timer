@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <div class="zoom-buttons">
-      <button @click="scale += 0.1">拡大</button>
-      <button @click="scale -= 0.1">縮小</button>
-      <button @click="scale = 1">リセット</button>
+      <button @click="plusScaleButton">拡大</button>
+      <button @click="minusScaleButton">縮小</button>
+      <button @click="resetScaleButton">リセット</button>
     </div>
     <timer
       time-up-audio-src="timer-timeup.mp3"
@@ -20,6 +20,22 @@ import Timer from '@/app/components/timer.vue'
 @Component({ components: { Timer } })
 export default class TimerPage extends Vue {
   scale: number = 1
+
+  plusScaleButton() {
+    this.scale += 0.1
+  }
+
+  minusScaleButton() {
+    if (this.scale - 0.5 <= 0) {
+      // 基本小さくすることはないと思うのでこの下限で良いはず
+      return
+    }
+    this.scale -= 0.1
+  }
+
+  resetScaleButton() {
+    this.scale = 1
+  }
 
   get scaleClass(): object {
     return { transform: `scale(${this.scale})` }
