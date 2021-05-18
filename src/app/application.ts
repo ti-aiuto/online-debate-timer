@@ -1,14 +1,11 @@
 import 'core-js/stable'
 import Vue from 'vue'
 import '@/app/application.scss'
-import Timer from '@/app/components/timer.vue'
+import TimerPage from '@/app/pages/timer-page.vue'
 
 document.addEventListener('DOMContentLoaded', () => {
   new Vue({
     el: '#timer-ui',
-    components: { Timer },
-    data(): { scale: number } {
-      return { scale: 1 }
-    },
+    components: { TimerPage }
   })
 })
