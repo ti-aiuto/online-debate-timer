@@ -14,4 +14,20 @@ jest.mock('@/app/time-up-audio')
 
 describe('TimerPage', () => {
   testMountComponent(() => factory({ shallow: false }))
+
+  describe('computed', () => {
+    describe('scaleStyle', () => {
+      it('style用のオブジェクトを返すこと', () => {
+        const wrapper = factory()
+        wrapper.vm.scale = 1
+        expect(wrapper.vm.scaleStyle).toEqual({ transform: 'scale(1)' })
+
+        wrapper.vm.scale = 0.5
+        expect(wrapper.vm.scaleStyle).toEqual({ transform: 'scale(0.5)' })
+
+        wrapper.vm.scale = 2
+        expect(wrapper.vm.scaleStyle).toEqual({ transform: 'scale(2)' })
+      })
+    })
+  })
 })

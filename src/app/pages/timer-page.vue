@@ -8,7 +8,7 @@
     <timer
       time-up-audio-src="timer-timeup.mp3"
       class="timer-wrapper"
-      :style="scaleClass"
+      :style="scaleStyle"
     ></timer>
   </div>
 </template>
@@ -37,7 +37,7 @@ export default class TimerPage extends Vue {
     this.scale = 1
   }
 
-  get scaleClass(): object {
+  get scaleStyle(): object {
     return { transform: `scale(${this.scale})` }
   }
 }
