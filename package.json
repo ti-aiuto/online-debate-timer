@@ -36,12 +36,12 @@
     "vue-jest": "^3.0.7",
     "vue-loader": "^15.9.7",
     "vue-property-decorator": "^9.1.2",
-    "vue-template-compiler": "^2.6.12",
+    "vue-template-compiler": "^2.6.14",
     "webpack": "^5.38.1",
     "webpack-cli": "^4.7.0"
   },
   "dependencies": {
     "core-js": "^3.16.4",
-    "vue": "^2.6.12"
+    "vue": "^2.6.14"
   }
 }
