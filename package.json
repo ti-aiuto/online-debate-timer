@@ -41,7 +41,7 @@
     "webpack-cli": "^4.8.0"
   },
   "dependencies": {
-    "core-js": "^3.18.0",
+    "core-js": "^3.18.1",
     "vue": "^2.6.14"
   }
 }
