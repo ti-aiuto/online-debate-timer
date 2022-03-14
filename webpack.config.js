@@ -10,7 +10,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: 'application-[chunkhash].js',
-    assetModuleFilename: '[hash][ext]'
+    assetModuleFilename: '[name]-[hash][ext]'
   },
   module: {
     rules: [
