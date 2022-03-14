@@ -2,7 +2,6 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CopyFilePlugin = require('copy-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
@@ -60,15 +59,6 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: './src/app/index.html'
-    }),
-    new CopyFilePlugin({
-      patterns: [
-        {
-          context: 'src/app',
-          from: '**/*.mp3',
-          to: path.resolve(__dirname, 'public')
-        }
-      ]
     }),
     new CleanWebpackPlugin()
   ],
