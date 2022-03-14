@@ -6,7 +6,7 @@
       <button @click="resetScaleButton">リセット</button>
     </div>
     <timer
-      time-up-audio-src="timer-timeup.mp3"
+      :time-up-audio-src="timeupAudio"
       class="timer-wrapper"
       :style="scaleStyle"
     ></timer>
@@ -16,6 +16,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import Timer from '@/app/components/timer.vue'
+import timeupAudio from '../timer-timeup.mp3';
 
 @Component({ components: { Timer } })
 export default class TimerPage extends Vue {
@@ -39,6 +40,10 @@ export default class TimerPage extends Vue {
 
   get scaleStyle(): object {
     return { transform: `scale(${this.scale})` }
+  }
+
+  get timeupAudio(): string {
+    return timeupAudio;
   }
 }
 </script>
