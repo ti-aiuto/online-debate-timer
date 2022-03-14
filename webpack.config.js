@@ -9,7 +9,8 @@ module.exports = {
   entry: './src/app/application.ts',
   output: {
     path: path.resolve(__dirname, 'public'),
-    filename: 'application-[chunkhash].js'
+    filename: 'application-[chunkhash].js',
+    assetModuleFilename: '[hash][ext]'
   },
   module: {
     rules: [
@@ -44,6 +45,11 @@ module.exports = {
             }
           }
         ]
+      },
+
+      {
+        test: /\.(mp3)$/,
+        type: 'asset/resource'
       }
     ]
   },
