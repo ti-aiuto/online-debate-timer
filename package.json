@@ -28,7 +28,7 @@
     "mini-css-extract-plugin": "^2.6.0",
     "sass": "^1.47.0",
     "sass-loader": "^12.6.0",
-    "ts-jest": "^27.1.2",
+    "ts-jest": "^27.1.4",
     "ts-loader": "^9.2.8",
     "typescript": "^4.6.2",
     "vue-class-component": "^7.2.6",
