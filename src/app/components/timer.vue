@@ -220,6 +220,7 @@ export default class extends Vue {
   box-shadow: 0 0 3px #bbb;
   border-radius: 24px;
   padding: 8px 0;
+  background-color: #fff;
 
   &__time-display {
     margin: 20px;
